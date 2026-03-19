@@ -25,7 +25,7 @@ export default function TermsPage() {
       <section>
         <SectionTitle>3. AI-Generated Content</SectionTitle>
         <ParagraphBlock>
-          Our AI models draft outreach based on the parameters you provide. While we strive for high quality and relevance, artificial intelligence can sometimes hallucinate or generate phrasing that isn't quite right. You are responsible for reviewing, approving, and verifying all AI-generated content before sending it to prospects.
+          Our AI models draft outreach based on the parameters you provide. While we strive for high quality and relevance, artificial intelligence can sometimes hallucinate or generate phrasing that isn&apos;t quite right. You are responsible for reviewing, approving, and verifying all AI-generated content before sending it to prospects.
         </ParagraphBlock>
       </section>
 
@@ -46,7 +46,7 @@ export default function TermsPage() {
       <section>
         <SectionTitle>6. Disclaimer of Warranties</SectionTitle>
         <ParagraphBlock>
-          Loqi is provided on an \"as is\" and \"as available\" basis without any warranties, either express or implied. We do not guarantee that the service will be uninterrupted, error-free, or perfectly accurate in its lead generation or drafting.
+          Loqi is provided on an &quot;as is&quot; and &quot;as available&quot; basis without any warranties, either express or implied. We do not guarantee that the service will be uninterrupted, error-free, or perfectly accurate in its lead generation or drafting.
         </ParagraphBlock>
       </section>
 
