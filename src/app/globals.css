@@ -28,7 +28,7 @@ body {
 }
 
 ::selection {
-  background-color: rgba(124, 58, 237, 0.25);
+  background-color: rgba(99, 102, 241, 0.25);
   color: #e2e4ea;
 }
 
@@ -77,12 +77,12 @@ body {
 
 /* Soft glow utility */
 .glow-accent {
-  box-shadow: 0 0 40px rgba(124, 58, 237, 0.08), 0 0 80px rgba(124, 58, 237, 0.04);
+  box-shadow: 0 0 40px rgba(99, 102, 241, 0.08), 0 0 80px rgba(99, 102, 241, 0.04);
 }
 
 /* Gradient text utility */
 .gradient-text {
-  background: linear-gradient(135deg, #ffffff 0%, #a78bfa 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
