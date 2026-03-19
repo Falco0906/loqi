@@ -17,10 +17,10 @@ const config: Config = {
           lighter: "#2a2d38",
         },
         accent: {
-          DEFAULT: "#2563eb",
-          light: "#60a5fa",
-          dark: "#1e40af",
-          muted: "rgba(37, 99, 235, 0.15)",
+          DEFAULT: "#7c3aed",
+          light: "#a78bfa",
+          dark: "#6d28d9",
+          muted: "rgba(124, 58, 237, 0.15)",
         },
       },
       fontFamily: {
