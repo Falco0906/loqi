@@ -38,20 +38,26 @@ export default function Footer() {
 
         <div className="mt-10 pt-8 border-t border-slate-800/20 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-slate-600">
-            © {new Date().getFullYear()} Loqi. All rights reserved.
+            © 2026 Loqi. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <a
-              href="#"
-              className="text-xs text-slate-600 hover:text-slate-400 transition-colors duration-300"
+              href="/legal/terms"
+              className="text-xs text-slate-500 hover:text-slate-300 transition-colors duration-300"
+            >
+              Terms
+            </a>
+            <a
+              href="/legal/privacy"
+              className="text-xs text-slate-500 hover:text-slate-300 transition-colors duration-300"
             >
               Privacy
             </a>
             <a
-              href="#"
-              className="text-xs text-slate-600 hover:text-slate-400 transition-colors duration-300"
+              href="/contact"
+              className="text-xs text-slate-500 hover:text-slate-300 transition-colors duration-300"
             >
-              Terms
+              Contact
             </a>
           </div>
         </div>

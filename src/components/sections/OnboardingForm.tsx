@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import ConsentModal from "../ui/ConsentModal";
 
 const BOT_USERNAME = "YOUR_BOT_USERNAME";
 
@@ -8,6 +9,7 @@ export default function OnboardingForm() {
   const [sell, setSell] = useState("");
   const [reach, setReach] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [errors, setErrors] = useState<{ sell?: string; reach?: string }>({});
 
   // Restore from localStorage on mount
@@ -43,11 +45,21 @@ export default function OnboardingForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validate()) return;
 
+    // Check consent state
+    const consentGiven = localStorage.getItem("loqi_consent_given");
+    if (consentGiven === "true") {
+      executeRedirect();
+    } else {
+      setIsModalOpen(true);
+    }
+  };
+
+  const executeRedirect = async () => {
     setLoading(true);
 
     // Store in localStorage
@@ -56,6 +68,7 @@ export default function OnboardingForm() {
         "loqi_onboarding",
         JSON.stringify({ sell: sell.trim(), reach: reach.trim(), ts: Date.now() })
       );
+      localStorage.setItem("loqi_consent_given", "true");
     } catch {
       // ignore
     }
@@ -204,6 +217,15 @@ export default function OnboardingForm() {
           </form>
         </div>
       </div>
+
+      <ConsentModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onAccept={() => {
+          setIsModalOpen(false);
+          executeRedirect();
+        }}
+      />
     </section>
   );
 }
