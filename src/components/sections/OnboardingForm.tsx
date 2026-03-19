@@ -45,6 +45,8 @@ export default function OnboardingForm() {
     return Object.keys(newErrors).length === 0;
   };
 
+  const isReady = sell.trim().length >= 3 && reach.trim().length >= 3;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -165,7 +167,11 @@ export default function OnboardingForm() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 rounded-2xl bg-[#2a2d38] text-white font-medium text-[15px] hover:bg-[#32353f] transition-all duration-300 mt-3 flex items-center justify-center gap-2.5 disabled:opacity-60 disabled:cursor-not-allowed"
+              className={`w-full py-4 rounded-2xl font-medium text-[15px] transition-all duration-300 mt-3 flex items-center justify-center gap-2.5 disabled:opacity-60 disabled:cursor-not-allowed ${
+                isReady 
+                  ? "bg-accent text-white shadow-lg shadow-accent/20 hover:bg-accent-dark hover:-translate-y-0.5" 
+                  : "bg-[#2a2d38] text-white/80 hover:bg-[#32353f] hover:text-white"
+              }`}
             >
               {loading ? (
                 <>
