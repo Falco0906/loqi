@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import ConsentModal from "../ui/ConsentModal";
 
-const BOT_USERNAME = "YOUR_BOT_USERNAME";
+const BOT_USERNAME = "LoqiChatBot";
 
 export default function OnboardingForm() {
   const [sell, setSell] = useState("");
