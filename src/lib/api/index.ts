@@ -1,79 +1,53 @@
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+"use client";
 
-// ─── Types ──────────────────────────────────────────────
-
-export interface CreateUserPayload {
-  email?: string;
-  sell: string;
-  reach: string;
-}
-
-export interface OnboardingData {
-  sell: string;
-  reach: string;
-  ts: number;
-}
-
-export interface Lead {
-  id: string;
+export interface RequestAccessPayload {
   name: string;
-  company: string;
-  role: string;
+  email: string;
+  whatsapp: string;
+  useCase: string;
 }
 
-export interface LeadParams {
-  query?: string;
-  limit?: number;
+export interface VerifyAccessCodePayload {
+  code: string;
 }
 
-// ─── API Stubs ──────────────────────────────────────────
-
-/**
- * Create a new user.
- * TODO: Connect to real API.
- */
-export async function createUser(
-  data: CreateUserPayload
-): Promise<{ id: string }> {
-  console.log(`[API] createUser →`, data);
-  // const res = await fetch(`${API_BASE_URL}/users`, {
-  //   method: "POST",
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify(data),
-  // });
-  // return res.json();
-  return { id: "placeholder" };
+export interface ApiErrorShape {
+  error?: string;
+  details?: Record<string, string>;
 }
 
-/**
- * Persist onboarding answers.
- * TODO: Connect to real API.
- */
-export async function saveOnboardingData(
-  data: OnboardingData
-): Promise<{ ok: boolean }> {
-  console.log(`[API] saveOnboardingData →`, data);
-  // const res = await fetch(`${API_BASE_URL}/onboarding`, {
-  //   method: "POST",
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify(data),
-  // });
-  // return res.json();
-  return { ok: true };
+async function parseJson<T>(response: Response): Promise<T> {
+  const data = (await response.json().catch(() => null)) as T | ApiErrorShape | null;
+
+  if (!response.ok) {
+    const message =
+      (data as ApiErrorShape | null)?.error ?? "Something went wrong. Please try again.";
+    throw Object.assign(new Error(message), {
+      details: (data as ApiErrorShape | null)?.details,
+    });
+  }
+
+  return data as T;
 }
 
-/**
- * Fetch leads matching the given params.
- * TODO: Connect to real API.
- */
-export async function getLeads(params?: LeadParams): Promise<Lead[]> {
-  console.log(`[API] getLeads →`, params);
-  // const qs = new URLSearchParams(params as Record<string, string>).toString();
-  // const res = await fetch(`${API_BASE_URL}/leads?${qs}`);
-  // return res.json();
-  return [];
+export async function requestAccess(data: RequestAccessPayload): Promise<{ ok: true }> {
+  const response = await fetch("/api/request-access", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+
+  return parseJson<{ ok: true }>(response);
 }
 
-// Suppress unused-var warning for API_BASE_URL in stub mode
-void API_BASE_URL;
+export async function verifyAccessCode(
+  data: VerifyAccessCodePayload
+): Promise<{ ok: true; redirectUrl: string; code: string }> {
+  const response = await fetch("/api/verify-access-code", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+
+  return parseJson<{ ok: true; redirectUrl: string; code: string }>(response);
+}

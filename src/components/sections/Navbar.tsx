@@ -47,7 +47,7 @@ export default function Navbar() {
             href="#start"
             className="text-sm px-5 py-2 rounded-full bg-accent text-white font-medium hover:bg-accent-dark transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20"
           >
-            Get started
+            Request access
           </a>
         </div>
       </div>

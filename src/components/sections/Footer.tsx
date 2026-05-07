@@ -31,7 +31,7 @@ export default function Footer() {
               href="#start"
               className="text-sm text-slate-500 hover:text-slate-300 transition-colors duration-300"
             >
-              Get started
+              Request access
             </a>
           </div>
         </div>

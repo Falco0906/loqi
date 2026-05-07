@@ -32,7 +32,7 @@ export default function Hero() {
                 href="#start"
                 className="inline-flex items-center px-7 py-3.5 rounded-full bg-accent text-white font-medium text-sm hover:bg-accent-dark transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25"
               >
-                Get started
+                Request access
                 <svg
                   className="ml-2 w-4 h-4"
                   fill="none"
@@ -48,10 +48,10 @@ export default function Hero() {
                 </svg>
               </a>
               <a
-                href="#how-it-works"
+                href="/access"
                 className="inline-flex items-center px-7 py-3.5 rounded-full border border-slate-700/60 text-slate-300 text-sm hover:border-slate-600 hover:text-white transition-all duration-300"
               >
-                See how it works
+                Enter access code
               </a>
             </div>
           </div>
