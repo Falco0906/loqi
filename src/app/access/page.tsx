@@ -21,6 +21,7 @@ export default function AccessPage() {
     if (typeof window === "undefined") return;
 
     const alreadyVerified = window.localStorage.getItem(ACCESS_STORAGE_KEY) === "true";
+    console.log("[access-page] initial unlock state", { alreadyVerified });
     if (alreadyVerified) {
       setVerified(true);
       setRedirectUrl(buildTelegramUrl());
@@ -31,16 +32,23 @@ export default function AccessPage() {
     event.preventDefault();
     setLoading(true);
     setError("");
+    console.log("[access-page] submitted access code", code.trim());
 
     try {
       const response = await verifyAccessCode({ code: code.trim() });
+      console.log("[access-page] API response", response);
 
       window.localStorage.setItem(ACCESS_STORAGE_KEY, "true");
       window.localStorage.setItem(ACCESS_CODE_STORAGE_KEY, response.code);
       setVerified(true);
       setRedirectUrl(response.redirectUrl);
+      console.log("[access-page] unlock state updated", {
+        verified: true,
+        redirectUrl: response.redirectUrl,
+      });
       window.location.href = response.redirectUrl;
     } catch (verificationError) {
+      console.error("[access-page] verification failed", verificationError);
       setError(
         verificationError instanceof Error
           ? verificationError.message

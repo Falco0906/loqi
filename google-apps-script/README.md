@@ -24,10 +24,18 @@ Use the full script in [Code.gs](./Code.gs).
 
 1. Create a new Google Sheet for Loqi onboarding.
 2. Name one sheet tab `Loqi Access`.
-3. In the Google Sheet, go to `Extensions` -> `Apps Script`.
-4. Delete the default starter code.
-5. Paste in the contents of [Code.gs](./Code.gs).
-6. Save the project with a name like `Loqi Onboarding Backend`.
+3. Copy the Google Sheet ID from the sheet URL.
+4. In the Google Sheet, go to `Extensions` -> `Apps Script`.
+5. Delete the default starter code.
+6. Paste in the contents of [Code.gs](./Code.gs).
+7. In `Code.gs`, replace:
+
+```javascript
+const SHEET_ID = "REPLACE_WITH_YOUR_GOOGLE_SHEET_ID";
+```
+
+with your real Google Sheet ID.
+8. Save the project with a name like `Loqi Onboarding Backend`.
 
 ## Deploy As Web App
 
@@ -41,6 +49,12 @@ Use the full script in [Code.gs](./Code.gs).
 6. Copy the generated Web App URL.
 
 That URL is your webhook/backend endpoint.
+
+## Important Runtime Notes
+
+- This script now uses `SpreadsheetApp.openById(SHEET_ID)`, which is more reliable for Web App execution than `getActiveSpreadsheet()`.
+- The `Loqi Access` tab must already exist.
+- Use `Executions` in Apps Script to inspect `Logger.log(...)` output after each test request.
 
 ## Endpoints
 
@@ -59,6 +73,21 @@ Send a `POST` request to the Web App URL with:
   "use_case": "Lead sourcing and outbound personalization",
   "created_at": "2026-05-07T12:00:00.000Z"
 }
+```
+
+Example `curl` test:
+
+```bash
+curl -X POST "https://script.google.com/macros/s/DEPLOYMENT_ID/exec" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "action": "request_access",
+    "name": "Jane Founder",
+    "email": "jane@company.com",
+    "whatsapp": "+14155550199",
+    "use_case": "Lead sourcing and outbound personalization",
+    "created_at": "2026-05-07T12:00:00.000Z"
+  }'
 ```
 
 Success response:
@@ -117,6 +146,17 @@ Invalid code example:
 }
 ```
 
+Example verify `curl` test:
+
+```bash
+curl -X POST "https://script.google.com/macros/s/DEPLOYMENT_ID/exec" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "action": "verify_access_code",
+    "access_code": "LOQI-12345"
+  }'
+```
+
 ## How To Use It In Loqi
 
 For your Next.js app:
@@ -151,5 +191,11 @@ The verification flow will only return `success: true` when:
 - The script uses `LockService` to avoid row-write collisions during simultaneous submissions.
 - Validation is intentionally minimal and lightweight.
 - Apps Script does not expose custom HTTP status codes reliably in web app responses, so the JSON body is the primary signal.
+- If a request still fails, open `Apps Script` -> `Executions` and inspect the logs for:
+  - parsed request body
+  - selected action
+  - sheet lookup
+  - appendRow execution
+  - full error stack
 - Keep the sheet private and only share editor access with your team.
 - If you update the script later, redeploy a new version or update the existing deployment.

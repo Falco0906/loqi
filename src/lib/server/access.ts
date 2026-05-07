@@ -1,7 +1,5 @@
 import nodemailer from "nodemailer";
 
-type AccessRow = Record<string, unknown>;
-
 const DUPLICATE_WINDOW_MS = 10 * 60 * 1000;
 const IP_WINDOW_MS = 60 * 60 * 1000;
 const MAX_IP_SUBMISSIONS = 5;
@@ -229,89 +227,60 @@ export async function sendTelegramAdminNotification(payload: {
   }
 }
 
-function normalizeKey(value: string): string {
-  return value.toLowerCase().replace(/[^a-z0-9]/g, "");
-}
-
-function getStringValue(row: AccessRow, aliases: string[]): string {
-  for (const [key, value] of Object.entries(row)) {
-    if (aliases.includes(normalizeKey(key)) && value != null) {
-      return String(value).trim();
-    }
-  }
-
-  return "";
-}
-
-function rowsFromMatrix(matrix: unknown[][]): AccessRow[] {
-  if (matrix.length < 2) return [];
-
-  const headers = matrix[0].map((cell) => String(cell ?? ""));
-  return matrix.slice(1).map((row) => {
-    const mapped: AccessRow = {};
-    headers.forEach((header, index) => {
-      mapped[header] = row[index];
-    });
-    return mapped;
-  });
-}
-
-function parseAccessRows(data: unknown): AccessRow[] {
-  if (Array.isArray(data)) {
-    if (Array.isArray(data[0])) {
-      return rowsFromMatrix(data as unknown[][]);
-    }
-    return data as AccessRow[];
-  }
-
-  if (data && typeof data === "object") {
-    const record = data as Record<string, unknown>;
-    const candidates = [record.rows, record.data, record.values];
-
-    for (const candidate of candidates) {
-      if (Array.isArray(candidate)) {
-        if (Array.isArray(candidate[0])) {
-          return rowsFromMatrix(candidate as unknown[][]);
-        }
-        return candidate as AccessRow[];
-      }
-    }
-  }
-
-  return [];
-}
-
 export async function verifyApprovedAccessCode(inputCode: string) {
   const readUrl = requireEnv("GOOGLE_SHEETS_READ_URL");
+  const normalizedInput = normalizeText(inputCode);
+  const requestUrl = new URL(readUrl);
+  requestUrl.searchParams.set("access_code", inputCode.trim());
 
-  const response = await fetch(readUrl, {
+  const response = await fetch(requestUrl.toString(), {
     method: "GET",
-    headers: { Accept: "application/json" },
+    headers: {
+      Accept: "application/json",
+    },
     cache: "no-store",
   });
 
+  const rawBody = await response.text();
+  let parsedBody: unknown = null;
+
+  if (rawBody) {
+    try {
+      parsedBody = JSON.parse(rawBody);
+    } catch {
+      parsedBody = rawBody;
+    }
+  }
+
+  console.log("[google-sheets-verify] request", {
+    url: requestUrl.toString(),
+    code: normalizedInput,
+  });
+  console.log("[google-sheets-verify] raw response body", rawBody);
+  console.log("[google-sheets-verify] response", {
+    status: response.status,
+    ok: response.ok,
+    body: parsedBody,
+  });
+
   if (!response.ok) {
+    console.error("[google-sheets-verify] failed response", {
+      status: response.status,
+      body: parsedBody,
+    });
     throw new Error(`Google Sheets read failed with status ${response.status}`);
   }
 
-  const data = (await response.json().catch(() => null)) as unknown;
-  const rows = parseAccessRows(data);
-  const normalizedInput = normalizeText(inputCode);
-
-  const match = rows.find((row) => {
-    const code = normalizeText(
-      getStringValue(row, ["accesscode", "code", "invitecode", "accesskey"])
-    );
-    return code === normalizedInput;
-  });
-
-  if (!match) {
-    return { ok: false as const };
+  if (!parsedBody || typeof parsedBody !== "object") {
+    console.error("[google-sheets-verify] invalid JSON body", { body: parsedBody });
+    throw new Error("Google Sheets verify returned an invalid response body");
   }
 
-  const status = normalizeText(
-    getStringValue(match, ["status", "approvalstatus", "accessstatus"])
-  );
+  const success = (parsedBody as { success?: unknown }).success === true;
+  console.log("[google-sheets-verify] parsed success", {
+    success,
+    parsedBody,
+  });
 
-  return { ok: status === "approved" };
+  return { ok: success };
 }
