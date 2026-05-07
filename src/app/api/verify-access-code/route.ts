@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyApprovedAccessCode } from "@/lib/server/access";
+import { getTelegramBotUsername } from "@/lib/access";
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,8 +22,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const botUsername =
-      process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME ?? "YOUR_BOT_USERNAME";
+    const botUsername = getTelegramBotUsername();
 
     const responseBody = {
       ok: true,
