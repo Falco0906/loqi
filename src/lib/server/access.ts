@@ -93,16 +93,62 @@ export async function forwardAccessRequest(payload: {
   ip: string;
 }) {
   const webhookUrl = requireEnv("GOOGLE_SHEETS_WEBHOOK_URL");
+  const webhookPayload = {
+    action: "request_access",
+    name: payload.name,
+    email: payload.email,
+    whatsapp: payload.whatsapp,
+    use_case: payload.useCase,
+    created_at: payload.timestamp,
+  };
 
   const response = await fetch(webhookUrl, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(webhookPayload),
     cache: "no-store",
   });
 
+  const rawBody = await response.text();
+
+  let parsedBody: unknown = null;
+  if (rawBody) {
+    try {
+      parsedBody = JSON.parse(rawBody);
+    } catch {
+      parsedBody = rawBody;
+    }
+  }
+
+  console.log("[google-sheets-webhook] request payload", webhookPayload);
+  console.log("[google-sheets-webhook] response", {
+    status: response.status,
+    ok: response.ok,
+    body: parsedBody,
+  });
+
   if (!response.ok) {
+    console.error("[google-sheets-webhook] failed response", {
+      status: response.status,
+      body: parsedBody,
+    });
     throw new Error(`Google Sheets webhook failed with status ${response.status}`);
+  }
+
+  if (
+    parsedBody &&
+    typeof parsedBody === "object" &&
+    "success" in parsedBody &&
+    (parsedBody as { success?: boolean }).success !== true
+  ) {
+    console.error("[google-sheets-webhook] unsuccessful body", {
+      status: response.status,
+      body: parsedBody,
+    });
+    throw new Error("Google Sheets webhook returned success=false");
   }
 }
 
