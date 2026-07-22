@@ -12,30 +12,29 @@ export default function Explanation() {
 
         <div className="space-y-6 animate-on-scroll">
           <p className="text-display-sm font-medium text-white leading-snug">
-            Most sales tools give you dashboards and data.
+            The workspace for
             <br />
-            Loqi just gives you a conversation.
+            outbound teams.
           </p>
         </div>
 
         <div className="mt-12 space-y-6 animate-on-scroll">
           <p className="text-body-lg text-slate-400 leading-relaxed">
-            You tell Loqi who you want to reach and what you sell. It goes out,
-            finds people who match, and drafts a short, honest message for each
-            one. Then it comes back and asks you: &quot;Here are three people.
-            Want me to send?&quot;
+            Most outbound workflows are fragmented across a dozen tools
+            and hundreds of manual steps. Loqi brings everything into one
+            place — research, drafting, campaign management, and review.
           </p>
 
           <p className="text-body-lg text-slate-400 leading-relaxed">
-            You say yes — or tweak the message — and Loqi sends it. When someone
-            replies, you hear about it immediately. No tabs to switch, no dashboards
-            to check. Just a chat.
+            Set your criteria. Loqi handles the research and generates
+            personalized outreach for each prospect. You review, edit,
+            and approve. Campaigns run in parallel. Replies are tracked.
+            Patterns emerge.
           </p>
 
           <p className="text-body text-slate-500 leading-relaxed">
-            It works inside Telegram or WhatsApp — the apps you already have
-            open all day. Think of it as a quiet, reliable teammate who handles
-            the reach-out so you can focus on the conversations that matter.
+            Not a chatbot. Not a CRM. An intelligent workspace designed
+            around how outbound actually works.
           </p>
         </div>
 

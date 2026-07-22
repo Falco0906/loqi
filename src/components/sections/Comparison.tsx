@@ -1,12 +1,12 @@
 "use client";
 
 const features = [
-  { label: "Setup time", loqi: "5 minutes, via chat", other: "Hours of forms and CRM config" },
-  { label: "Interface", loqi: "Telegram / WhatsApp", other: "Web dashboard" },
-  { label: "Lead sourcing", loqi: "AI-powered, real-time", other: "Static database" },
-  { label: "Outreach", loqi: "Personalized, human-reviewed", other: "Templates & sequences" },
-  { label: "Approval", loqi: "You approve every message", other: "Auto-sends by default" },
-  { label: "Learning curve", loqi: "None — it's a chat", other: "Significant training needed" },
+  { label: "Setup", loqi: "Define your ICP in minutes", other: "Hours of CRM setup, field mapping, sequence config" },
+  { label: "Lead sourcing", loqi: "Research + enrichment across providers", other: "Manual search or static database imports" },
+  { label: "Personalization", loqi: "Each message unique, context-aware, AI-generated", other: "Templates with merge fields" },
+  { label: "Approval", loqi: "Every message reviewed before sending", other: "Auto-sends with minimal oversight" },
+  { label: "Campaign management", loqi: "Unified workspace, parallel campaigns", other: "Scattered across tabs and tools" },
+  { label: "Learning", loqi: "AI analyzes replies and improves over time", other: "Manual analysis, no memory" },
 ];
 
 export default function Comparison() {
@@ -18,10 +18,10 @@ export default function Comparison() {
             How it compares
           </p>
           <h2 className="text-display-sm font-semibold text-white">
-            A different approach
+            A better way to work
           </h2>
           <p className="text-body text-slate-500 mt-4">
-            Traditional tools are powerful but complex. Loqi takes a simpler path.
+            Most tools add complexity. Loqi removes it — so you can focus on what matters.
           </p>
         </div>
 

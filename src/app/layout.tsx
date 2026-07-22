@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Loqi — Run your outbound from chat",
+  title: "Loqi — AI-Native Outbound Workspace",
   description:
-    "Loqi is an AI Sales Operator that finds leads, qualifies them, generates outreach, and lets you approve everything from Telegram or WhatsApp.",
+    "Research prospects, generate personalized outreach, and manage campaigns from one intelligent workspace.",
 };
 
 export default function RootLayout({

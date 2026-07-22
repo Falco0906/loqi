@@ -7,8 +7,9 @@ import Explanation from "@/components/sections/Explanation";
 import HowItWorks from "@/components/sections/HowItWorks";
 import ChatDemo from "@/components/sections/ChatDemo";
 import Comparison from "@/components/sections/Comparison";
-import OnboardingForm from "@/components/sections/OnboardingForm";
 import Trust from "@/components/sections/Trust";
+import PricingSection from "@/components/sections/PricingSection";
+import OnboardingForm from "@/components/sections/OnboardingForm";
 import Footer from "@/components/sections/Footer";
 
 export default function Home() {
@@ -22,8 +23,9 @@ export default function Home() {
       <HowItWorks />
       <ChatDemo />
       <Comparison />
-      <OnboardingForm />
       <Trust />
+      <PricingSection />
+      <OnboardingForm />
       <Footer />
     </main>
   );

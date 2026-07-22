@@ -39,7 +39,7 @@ export default function PrivacyPage() {
       <section>
         <SectionTitle>5. Data storage</SectionTitle>
         <ParagraphBlock>
-          We store your data securely using industry-standard encryption practices. Your information is held for as long as your account is active, ensuring a seamless experience when you return to your chat interface to resume your outbound campaigns.
+          We store your data securely using industry-standard encryption practices. Your information is held for as long as your account is active, ensuring a seamless experience when you return to resume your outbound campaigns.
         </ParagraphBlock>
       </section>
 
@@ -53,7 +53,7 @@ export default function PrivacyPage() {
       <section>
         <SectionTitle>7. Contact Us</SectionTitle>
         <ParagraphBlock>
-          If you have questions about how your data is handled or wish to exercise your data rights, please contact our team at <a href="mailto:contact@tryloqi.com" className="text-accent-light hover:text-white transition-colors duration-200">contact@tryloqi.com</a>.
+          If you have questions about how your data is handled or wish to exercise your data rights, please contact our team at <a href="mailto:founder@tryloqi.com" className="text-accent-light hover:text-white transition-colors duration-200">founder@tryloqi.com</a>.
         </ParagraphBlock>
       </section>
 

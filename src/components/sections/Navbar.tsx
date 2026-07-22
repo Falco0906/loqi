@@ -32,22 +32,22 @@ export default function Navbar() {
             How it works
           </a>
           <a
-            href="#demo"
+            href="#features"
             className="text-sm text-slate-400 hover:text-slate-200 transition-colors duration-300"
           >
-            Demo
+            Features
           </a>
           <a
-            href="#compare"
+            href="#pricing"
             className="text-sm text-slate-400 hover:text-slate-200 transition-colors duration-300"
           >
-            Compare
+            Pricing
           </a>
           <a
-            href="#start"
+            href="/book-demo"
             className="text-sm px-5 py-2 rounded-full bg-accent text-white font-medium hover:bg-accent-dark transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20"
           >
-            Request access
+            Book a Demo
           </a>
         </div>
       </div>

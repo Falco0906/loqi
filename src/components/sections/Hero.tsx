@@ -11,28 +11,25 @@ export default function Hero() {
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left — Copy */}
           <div className="max-w-xl">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface-light/60 border border-slate-700/40 text-xs text-slate-400 mb-8 animate-fade-in">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              Works on Telegram &amp; WhatsApp
-            </div>
-
             <h1 className="text-display-lg font-semibold text-white mb-6 animate-fade-in-up">
-              Run your outbound
+              Outbound,
               <br />
-              <span className="gradient-text">from chat</span>
+              <span className="gradient-text">without the busywork.</span>
             </h1>
 
             <p className="text-body-lg text-slate-400 mb-10 animate-fade-in-up-delay leading-relaxed">
-              Loqi finds the right leads, writes the outreach, and waits for
-              your approval — all inside a simple chat conversation.
+              Research prospects, generate personalized outreach, and manage
+              campaigns from one intelligent workspace — so your team can
+              spend less time on repetitive tasks and more time building
+              relationships.
             </p>
 
             <div className="flex flex-wrap gap-4 animate-fade-in-up-delay-2">
               <a
-                href="#start"
+                href="/book-demo"
                 className="inline-flex items-center px-7 py-3.5 rounded-full bg-accent text-white font-medium text-sm hover:bg-accent-dark transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25"
               >
-                Request access
+                Book a Demo
                 <svg
                   className="ml-2 w-4 h-4"
                   fill="none"
@@ -48,105 +45,91 @@ export default function Hero() {
                 </svg>
               </a>
               <a
-                href="/access"
+                href="#features"
                 className="inline-flex items-center px-7 py-3.5 rounded-full border border-slate-700/60 text-slate-300 text-sm hover:border-slate-600 hover:text-white transition-all duration-300"
               >
-                Enter access code
+                Explore Features
               </a>
             </div>
           </div>
 
-          {/* Right — Chat UI Mock */}
+          {/* Right — Product mockup (Mission Control) */}
           <div className="hidden lg:block animate-fade-in-up-delay">
             <div className="relative">
               <div className="absolute -inset-4 bg-gradient-to-br from-blue-500/6 via-transparent to-blue-400/3 rounded-3xl blur-[20px]" />
               <div className="relative bg-surface rounded-2xl border border-slate-800/60 overflow-hidden shadow-2xl shadow-black/30">
-                {/* Chat header */}
+                {/* Top bar */}
                 <div className="flex items-center gap-3 px-5 py-3.5 border-b border-slate-800/40 bg-surface-light/40">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-slate-700 to-slate-600 flex items-center justify-center text-white text-xs font-bold">
-                    L
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-red-500/60" />
+                    <div className="w-2 h-2 rounded-full bg-yellow-500/60" />
+                    <div className="w-2 h-2 rounded-full bg-emerald-500/60" />
                   </div>
-                  <div>
-                    <p className="text-sm font-medium text-white">Loqi</p>
-                    <p className="text-xs text-emerald-400">Online</p>
-                  </div>
-                </div>
-
-                {/* Chat messages */}
-                <div className="p-5 space-y-4 min-h-[320px]">
-                  {/* Bot message */}
-                  <div className="flex gap-3">
-                    <div className="w-6 h-6 rounded-full bg-slate-700/50 flex-shrink-0 flex items-center justify-center mt-0.5">
-                      <span className="text-[10px] text-slate-400 font-bold">L</span>
-                    </div>
-                    <div className="bg-surface-light rounded-2xl rounded-tl-sm px-4 py-3 max-w-[85%]">
-                      <p className="text-sm text-slate-300">
-                        Found <span className="text-white font-medium">12 leads</span> matching
-                        &quot;SaaS founders, Series A, US&quot;
-                      </p>
-                      <p className="text-xs text-slate-500 mt-1.5">Just now</p>
-                    </div>
-                  </div>
-
-                  {/* Bot follow-up */}
-                  <div className="flex gap-3">
-                    <div className="w-6 h-6 rounded-full bg-slate-700/50 flex-shrink-0 flex items-center justify-center mt-0.5">
-                      <span className="text-[10px] text-slate-400 font-bold">L</span>
-                    </div>
-                    <div className="bg-surface-light rounded-2xl rounded-tl-sm px-4 py-3 max-w-[85%]">
-                      <p className="text-sm text-slate-300">
-                        Top 3 are ready. Want me to draft outreach?
-                      </p>
-                      <p className="text-xs text-slate-500 mt-1.5">Just now</p>
-                    </div>
-                  </div>
-
-                  {/* User reply */}
-                  <div className="flex justify-end">
-                    <div className="bg-accent/90 rounded-2xl rounded-tr-sm px-4 py-3 max-w-[75%]">
-                      <p className="text-sm text-white">Yes, send them 👍</p>
-                      <p className="text-xs text-blue-200/60 mt-1.5">Just now</p>
-                    </div>
-                  </div>
-
-                  {/* Bot confirmation */}
-                  <div className="flex gap-3">
-                    <div className="w-6 h-6 rounded-full bg-slate-700/50 flex-shrink-0 flex items-center justify-center mt-0.5">
-                      <span className="text-[10px] text-slate-400 font-bold">L</span>
-                    </div>
-                    <div className="bg-surface-light rounded-2xl rounded-tl-sm px-4 py-3 max-w-[85%]">
-                      <p className="text-sm text-slate-300">
-                        <span className="text-emerald-400">✓</span> Done — 3 emails sent. I&apos;ll
-                        notify you when they reply.
-                      </p>
-                      <p className="text-xs text-slate-500 mt-1.5">Just now</p>
-                    </div>
+                  <div className="ml-4 flex items-center gap-2 text-xs text-slate-500">
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 001.06.44H18A2.25 2.25 0 0120.25 9v.776" />
+                    </svg>
+                    <span>Mission Control</span>
                   </div>
                 </div>
 
-                {/* Chat input */}
-                <div className="px-5 py-3 border-t border-slate-800/40 bg-surface-light/30">
-                  <div className="flex items-center gap-3 bg-surface rounded-xl px-4 py-2.5 border border-slate-800/40">
-                    <input
-                      type="text"
-                      placeholder="Message Loqi..."
-                      className="flex-1 bg-transparent text-sm text-slate-400 outline-none placeholder:text-slate-600"
-                      readOnly
-                    />
-                    <div className="w-7 h-7 rounded-lg bg-accent/80 flex items-center justify-center">
-                      <svg
-                        className="w-3.5 h-3.5 text-white"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2.5}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
-                        />
-                      </svg>
+                {/* Mock dashboard content */}
+                <div className="p-5 space-y-4">
+                  {/* KPI row */}
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="bg-surface-light/60 rounded-xl p-3 border border-slate-800/30">
+                      <div className="text-[11px] uppercase tracking-wider text-slate-500">Active campaigns</div>
+                      <div className="text-xl font-semibold text-white mt-1">4</div>
+                    </div>
+                    <div className="bg-surface-light/60 rounded-xl p-3 border border-slate-800/30">
+                      <div className="text-[11px] uppercase tracking-wider text-slate-500">Leads in pipeline</div>
+                      <div className="text-xl font-semibold text-white mt-1">147</div>
+                    </div>
+                    <div className="bg-surface-light/60 rounded-xl p-3 border border-slate-800/30">
+                      <div className="text-[11px] uppercase tracking-wider text-slate-500">Drafts pending</div>
+                      <div className="text-xl font-semibold text-white mt-1">12</div>
+                    </div>
+                  </div>
+
+                  {/* Campaign list */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between bg-surface-light/30 rounded-xl px-4 py-3 border border-slate-800/30">
+                      <div className="flex items-center gap-3">
+                        <div className="w-2 h-2 rounded-full bg-emerald-400" />
+                        <div>
+                          <div className="text-sm text-white font-medium">SaaS Series A Outreach</div>
+                          <div className="text-xs text-slate-500 mt-0.5">42 leads · 8 drafts ready</div>
+                        </div>
+                      </div>
+                      <div className="text-xs text-emerald-400">Active</div>
+                    </div>
+                    <div className="flex items-center justify-between bg-surface-light/30 rounded-xl px-4 py-3 border border-slate-800/30">
+                      <div className="flex items-center gap-3">
+                        <div className="w-2 h-2 rounded-full bg-emerald-400" />
+                        <div>
+                          <div className="text-sm text-white font-medium">Fintech CTO Outreach</div>
+                          <div className="text-xs text-slate-500 mt-0.5">28 leads · 3 drafts ready</div>
+                        </div>
+                      </div>
+                      <div className="text-xs text-emerald-400">Active</div>
+                    </div>
+                    <div className="flex items-center justify-between bg-surface-light/30 rounded-xl px-4 py-3 border border-slate-800/30">
+                      <div className="flex items-center gap-3">
+                        <div className="w-2 h-2 rounded-full bg-amber-400" />
+                        <div>
+                          <div className="text-sm text-white font-medium">DevTools Q3 Campaign</div>
+                          <div className="text-xs text-slate-500 mt-0.5">15 leads · awaiting approval</div>
+                        </div>
+                      </div>
+                      <div className="text-xs text-amber-400">Needs review</div>
+                    </div>
+                  </div>
+
+                  {/* Activity indicator */}
+                  <div className="flex items-center gap-3 bg-accent/5 rounded-xl px-4 py-3 border border-accent/10">
+                    <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+                    <div className="text-xs text-accent-light">
+                      Researching 12 new prospects for SaaS campaign
                     </div>
                   </div>
                 </div>

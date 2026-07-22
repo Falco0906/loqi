@@ -1,25 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
 import Button from "@/components/ui/Button";
-import RequestAccessModal from "@/components/ui/RequestAccessModal";
-import { ACCESS_STORAGE_KEY, buildTelegramUrl } from "@/lib/access";
 
 export default function OnboardingForm() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isUnlocked, setIsUnlocked] = useState(false);
-
-  useEffect(() => {
-    const syncAccessState = () => {
-      setIsUnlocked(window.localStorage.getItem(ACCESS_STORAGE_KEY) === "true");
-    };
-
-    syncAccessState();
-    window.addEventListener("focus", syncAccessState);
-    return () => window.removeEventListener("focus", syncAccessState);
-  }, []);
-
   return (
     <section id="start" className="relative px-6 py-32">
       <div className="mx-auto max-w-5xl">
@@ -31,69 +14,49 @@ export default function OnboardingForm() {
           <div className="relative grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
             <div className="animate-on-scroll">
               <p className="mb-4 text-xs uppercase tracking-[0.26em] text-slate-500">
-                Limited rollout
+                See it in action
               </p>
               <h2 className="max-w-2xl text-display-sm font-semibold text-white">
-                Join Loqi through our early-access onboarding
+                Book a personalized demo
               </h2>
               <p className="mt-5 max-w-2xl text-body-lg leading-relaxed text-slate-400">
-                We&apos;re onboarding teams manually for now so every Loqi setup stays
-                thoughtful, high-signal, and hands-on from the first conversation.
+                We will show you how Loqi researches prospects,
+                generate personalized outreach, and run your campaigns —
+                all reviewed and approved by you.
               </p>
 
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Button
-                  type="button"
-                  variant="accent"
-                  onClick={() => setIsModalOpen(true)}
-                >
-                  Request Access
-                </Button>
-                <Button href="/access" variant="secondary">
-                  Enter Access Code
+              <div className="mt-8">
+                <Button href="/book-demo" variant="accent" size="md">
+                  Book a Demo
                 </Button>
               </div>
 
-              {isUnlocked ? (
-                <div className="mt-6 flex flex-col gap-3 rounded-3xl border border-emerald-500/20 bg-emerald-500/10 p-5 sm:flex-row sm:items-center sm:justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-emerald-300">Access unlocked</p>
-                    <p className="mt-1 text-sm leading-relaxed text-slate-300">
-                      Your code is approved. Telegram onboarding is ready.
-                    </p>
-                  </div>
-                  <Button href={buildTelegramUrl()} variant="accent">
-                    Continue to Telegram
-                  </Button>
-                </div>
-              ) : (
-                <p className="mt-6 max-w-xl text-sm leading-relaxed text-slate-500">
-                  After approval and payment, we&apos;ll send you an access code that unlocks
-                  Telegram onboarding on this site.
-                </p>
-              )}
+              <p className="mt-6 max-w-xl text-sm leading-relaxed text-slate-500">
+                No commitment. No sales pitch. Just a walkthrough of how
+                Loqi fits into your outbound workflow.
+              </p>
             </div>
 
             <div className="animate-on-scroll">
               <div className="rounded-[28px] border border-slate-800/60 bg-[#141722] p-6 sm:p-7">
                 <div className="mb-5 flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-white">How access works</p>
+                    <p className="text-sm font-medium text-white">What to expect</p>
                     <p className="mt-1 text-xs uppercase tracking-[0.2em] text-slate-500">
-                      Four-step rollout
+                      Demo overview
                     </p>
                   </div>
                   <div className="rounded-full border border-slate-700/60 px-3 py-1 text-xs text-slate-400">
-                    Human-reviewed
+                    30 minutes
                   </div>
                 </div>
 
                 <div className="space-y-4">
                   {[
-                    "Request access and share your team details.",
-                    "We reach out, demo Loqi, and confirm fit.",
-                    "After payment, we send your access code.",
-                    "Enter the code and unlock Telegram onboarding.",
+                    "Walkthrough of the workspace and how outbound workflows operate.",
+                    "See lead discovery, enrichment, and personalized drafting in action.",
+                    "Review the approval workflow and campaign management interface.",
+                    "Q&A about how Loqi fits your specific outbound process.",
                   ].map((step, index) => (
                     <div
                       key={step}
@@ -109,11 +72,11 @@ export default function OnboardingForm() {
 
                 <div className="mt-6 rounded-2xl border border-slate-800/50 bg-surface px-4 py-4">
                   <p className="text-sm leading-relaxed text-slate-400">
-                    Need help or already spoke with the team? Head to{" "}
-                    <Link href="/access" className="text-accent-light transition-colors hover:text-white">
-                      Enter Access Code
-                    </Link>{" "}
-                    to unlock your account.
+                    Already spoke with the team?{" "}
+                    <a href="/book-demo" className="text-accent-light transition-colors hover:text-white">
+                      Book a demo
+                    </a>{" "}
+                    and we will pick up where we left off.
                   </p>
                 </div>
               </div>
@@ -121,11 +84,6 @@ export default function OnboardingForm() {
           </div>
         </div>
       </div>
-
-      <RequestAccessModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
     </section>
   );
 }

@@ -17,7 +17,7 @@ export default function ContactPage() {
 
       <div className="flex flex-col sm:flex-row gap-6">
         <a 
-          href="mailto:contact@tryloqi.com"
+          href="mailto:founder@tryloqi.com"
           className="group flex flex-col flex-1 bg-surface border border-slate-800/50 rounded-2xl p-6 hover:border-accent/50 hover:bg-surface-light/30 transition-all duration-300"
         >
           <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center mb-4 text-accent">
@@ -27,7 +27,7 @@ export default function ContactPage() {
             </svg>
           </div>
           <h3 className="text-white font-medium mb-1 group-hover:text-accent-light transition-colors">Email Us</h3>
-          <p className="text-slate-400 text-sm">contact@tryloqi.com</p>
+          <p className="text-slate-400 text-sm">founder@tryloqi.com</p>
         </a>
 
         <div className="flex flex-col flex-1 bg-surface border border-slate-800/50 rounded-2xl p-6">

@@ -10,7 +10,7 @@ export default function Footer() {
               loqi
             </a>
             <span className="text-sm text-slate-600">
-              The AI Sales Operator
+              AI-Native Outbound Workspace
             </span>
           </div>
 
@@ -22,16 +22,16 @@ export default function Footer() {
               How it works
             </a>
             <a
-              href="#compare"
+              href="#features"
               className="text-sm text-slate-500 hover:text-slate-300 transition-colors duration-300"
             >
-              Compare
+              Features
             </a>
             <a
-              href="#start"
+              href="#pricing"
               className="text-sm text-slate-500 hover:text-slate-300 transition-colors duration-300"
             >
-              Request access
+              Pricing
             </a>
           </div>
         </div>
@@ -41,6 +41,12 @@ export default function Footer() {
             © 2026 Loqi. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
+            <a
+              href="/book-demo"
+              className="text-xs text-slate-500 hover:text-slate-300 transition-colors duration-300"
+            >
+              Book a Demo
+            </a>
             <a
               href="/legal/terms"
               className="text-xs text-slate-500 hover:text-slate-300 transition-colors duration-300"

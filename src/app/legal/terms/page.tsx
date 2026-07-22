@@ -11,7 +11,7 @@ export default function TermsPage() {
       <section>
         <SectionTitle>1. About Loqi</SectionTitle>
         <ParagraphBlock>
-          Loqi operates as an AI-powered sales assistant designed to help you find leads and draft outbound outreach. Our service provides you with tools to streamline your outreach workflow from within conversational interfaces like Telegram and WhatsApp.
+          Loqi is an AI-native outbound workspace that helps you find leads, generate personalized outreach, and manage campaigns. Our service provides you with tools to streamline your outreach workflow from within the Loqi workspace.
         </ParagraphBlock>
       </section>
 
@@ -60,7 +60,7 @@ export default function TermsPage() {
       <section>
         <SectionTitle>8. Contact Us</SectionTitle>
         <ParagraphBlock>
-          If you have any questions about these terms or how we operate, please reach out to us at <a href="mailto:contact@tryloqi.com" className="text-accent-light hover:text-white transition-colors duration-200">contact@tryloqi.com</a>. We are always happy to clarify.
+          If you have any questions about these terms or how we operate, please reach out to us at <a href="mailto:founder@tryloqi.com" className="text-accent-light hover:text-white transition-colors duration-200">founder@tryloqi.com</a>. We are always happy to clarify.
         </ParagraphBlock>
       </section>
 
