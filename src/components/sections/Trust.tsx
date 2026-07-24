@@ -38,13 +38,13 @@ export default function Trust() {
     <section className="relative py-32 px-6">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-16 animate-on-scroll">
-          <p className="text-sm uppercase tracking-widest text-accent-light/70 mb-4 font-medium">
+          <p className="text-sm uppercase tracking-widest text-accent/70 mb-4 font-medium">
             Our approach
           </p>
-          <h2 className="text-display-sm font-semibold text-white">
+          <h2 className="text-display-sm font-semibold text-foreground">
             Designed for real relationships
           </h2>
-          <p className="text-body text-slate-500 mt-4 max-w-lg mx-auto">
+          <p className="text-body text-tertiary mt-4 max-w-lg mx-auto">
             Outreach should be honest, personal, and respectful. Every feature in Loqi is built around that principle.
           </p>
         </div>
@@ -53,15 +53,15 @@ export default function Trust() {
           {pillars.map((pillar) => (
             <div
               key={pillar.title}
-              className="bg-surface rounded-2xl border border-slate-800/40 p-8 hover:border-slate-700/60 transition-all duration-500 group"
+              className="bg-surface rounded-2xl border border-border p-8 hover:border-slate-700/60 transition-all duration-500 group"
             >
-              <div className="w-12 h-12 rounded-xl bg-surface-light border border-slate-700/40 flex items-center justify-center text-accent-light mb-6 group-hover:border-accent/30 group-hover:bg-accent-muted transition-all duration-500">
+              <div className="w-12 h-12 rounded-xl bg-surface-hover border border-border flex items-center justify-center text-accent mb-6 group-hover:border-accent/30 group-hover:bg-accent-muted transition-all duration-500">
                 {pillar.icon}
               </div>
-              <h3 className="text-lg font-semibold text-white mb-3">
+              <h3 className="text-lg font-semibold text-foreground mb-3">
                 {pillar.title}
               </h3>
-              <p className="text-sm text-slate-500 leading-relaxed">
+              <p className="text-sm text-tertiary leading-relaxed">
                 {pillar.description}
               </p>
             </div>

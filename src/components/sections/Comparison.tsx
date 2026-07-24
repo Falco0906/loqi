@@ -17,21 +17,21 @@ export default function Comparison() {
           <p className="text-sm uppercase tracking-widest text-accent-light/70 mb-4 font-medium">
             How it compares
           </p>
-          <h2 className="text-display-sm font-semibold text-white">
+          <h2 className="text-display-sm font-semibold text-foreground">
             A better way to work
           </h2>
-          <p className="text-body text-slate-500 mt-4">
+          <p className="text-body text-secondary mt-4">
             Most tools add complexity. Loqi removes it — so you can focus on what matters.
           </p>
         </div>
 
         <div className="animate-on-scroll">
-          <div className="bg-surface rounded-2xl border border-slate-800/50 overflow-hidden">
+          <div className="bg-surface rounded-2xl border border-border overflow-hidden">
             {/* Header */}
-            <div className="grid grid-cols-3 px-6 py-4 border-b border-slate-800/40 bg-surface-light/30">
-              <div className="text-sm text-slate-500 font-medium" />
-              <div className="text-sm font-semibold text-white text-center">Loqi</div>
-              <div className="text-sm font-medium text-slate-500 text-center">Traditional tools</div>
+            <div className="grid grid-cols-3 px-6 py-4 border-b border-border bg-surface-hover">
+              <div className="text-sm text-secondary font-medium" />
+              <div className="text-sm font-semibold text-foreground text-center">Loqi</div>
+              <div className="text-sm font-medium text-secondary text-center">Traditional tools</div>
             </div>
 
             {/* Rows */}
@@ -40,11 +40,11 @@ export default function Comparison() {
                 key={feature.label}
                 className={`grid grid-cols-3 px-6 py-5 items-center ${
                   i < features.length - 1 ? "border-b border-slate-800/20" : ""
-                } hover:bg-surface-light/20 transition-colors duration-300`}
+                } hover:bg-surface-hover transition-colors duration-300`}
               >
-                <div className="text-sm text-slate-400 font-medium">{feature.label}</div>
+                <div className="text-sm text-tertiary font-medium">{feature.label}</div>
                 <div className="text-sm text-slate-200 text-center">{feature.loqi}</div>
-                <div className="text-sm text-slate-500 text-center">{feature.other}</div>
+                <div className="text-sm text-secondary text-center">{feature.other}</div>
               </div>
             ))}
           </div>

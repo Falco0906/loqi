@@ -3,7 +3,7 @@
 import React from "react";
 import { cn } from "@/lib/formatting";
 
-type ButtonVariant = "primary" | "secondary" | "accent";
+type ButtonVariant = "primary" | "secondary" | "ghost";
 type ButtonSize = "sm" | "md" | "lg";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -16,17 +16,17 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    "bg-[#2a2d38] text-white hover:bg-[#32353f]",
+    "bg-accent text-background hover:bg-accent-light active:bg-accent",
   secondary:
-    "border border-slate-700/60 text-slate-300 hover:border-slate-600 hover:text-white bg-transparent",
-  accent:
-    "bg-accent text-white hover:bg-accent-dark hover:shadow-lg hover:shadow-blue-500/20",
+    "border border-border bg-surface text-foreground hover:bg-surface-hover active:bg-surface active:scale-[0.98]",
+  ghost:
+    "text-secondary hover:text-foreground hover:bg-surface-light active:bg-surface",
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
-  sm: "px-5 py-2 text-sm rounded-full",
-  md: "px-7 py-3.5 text-sm rounded-full",
-  lg: "w-full py-4 text-[15px] rounded-2xl",
+  sm: "px-4 py-1.5 text-label-md",
+  md: "px-6 py-2.5 text-label-lg",
+  lg: "px-8 py-3 text-label-lg",
 };
 
 export default function Button({
@@ -40,14 +40,13 @@ export default function Button({
   ...props
 }: ButtonProps) {
   const classes = cn(
-    "inline-flex items-center justify-center gap-2.5 font-medium transition-all duration-300",
+    "inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-200",
     variantStyles[variant],
     sizeStyles[size],
-    (disabled || loading) && "opacity-60 cursor-not-allowed",
+    (disabled || loading) && "opacity-50 cursor-not-allowed pointer-events-none",
     className
   );
 
-  // If href is provided, render an anchor
   if (href) {
     return (
       <a href={href} className={classes}>

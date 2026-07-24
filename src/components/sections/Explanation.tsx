@@ -11,7 +11,7 @@ export default function Explanation() {
         </div>
 
         <div className="space-y-6 animate-on-scroll">
-          <p className="text-display-sm font-medium text-white leading-snug">
+          <p className="text-display-sm font-medium text-foreground leading-snug">
             The workspace for
             <br />
             outbound teams.
@@ -19,20 +19,20 @@ export default function Explanation() {
         </div>
 
         <div className="mt-12 space-y-6 animate-on-scroll">
-          <p className="text-body-lg text-slate-400 leading-relaxed">
+          <p className="text-body-lg text-secondary leading-relaxed">
             Most outbound workflows are fragmented across a dozen tools
             and hundreds of manual steps. Loqi brings everything into one
             place — research, drafting, campaign management, and review.
           </p>
 
-          <p className="text-body-lg text-slate-400 leading-relaxed">
+          <p className="text-body-lg text-secondary leading-relaxed">
             Set your criteria. Loqi handles the research and generates
             personalized outreach for each prospect. You review, edit,
             and approve. Campaigns run in parallel. Replies are tracked.
             Patterns emerge.
           </p>
 
-          <p className="text-body text-slate-500 leading-relaxed">
+          <p className="text-body text-tertiary leading-relaxed">
             Not a chatbot. Not a CRM. An intelligent workspace designed
             around how outbound actually works.
           </p>
@@ -40,9 +40,9 @@ export default function Explanation() {
 
         {/* Decorative divider */}
         <div className="mt-20 flex items-center gap-4 animate-on-scroll">
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-slate-700/60 to-transparent" />
+          <div className="h-px flex-1 bg-border" />
           <div className="w-1.5 h-1.5 rounded-full bg-accent/40" />
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-slate-700/60 to-transparent" />
+          <div className="h-px flex-1 bg-border" />
         </div>
       </div>
     </section>

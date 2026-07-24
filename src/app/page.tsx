@@ -3,10 +3,10 @@
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import Navbar from "@/components/sections/Navbar";
 import Hero from "@/components/sections/Hero";
-import Explanation from "@/components/sections/Explanation";
-import HowItWorks from "@/components/sections/HowItWorks";
-import ChatDemo from "@/components/sections/ChatDemo";
-import Comparison from "@/components/sections/Comparison";
+import ProductShowcase from "@/components/sections/ProductShowcase";
+import AIWorkflow from "@/components/sections/AIWorkflow";
+import WorkspaceTour from "@/components/sections/WorkspaceTour";
+import WhySwitch from "@/components/sections/WhySwitch";
 import Trust from "@/components/sections/Trust";
 import PricingSection from "@/components/sections/PricingSection";
 import OnboardingForm from "@/components/sections/OnboardingForm";
@@ -19,10 +19,10 @@ export default function Home() {
     <main className="relative overflow-x-hidden">
       <Navbar />
       <Hero />
-      <Explanation />
-      <HowItWorks />
-      <ChatDemo />
-      <Comparison />
+      <ProductShowcase />
+      <AIWorkflow />
+      <WorkspaceTour />
+      <WhySwitch />
       <Trust />
       <PricingSection />
       <OnboardingForm />

@@ -102,7 +102,7 @@ export default function BookDemoPage() {
     return (
       <main className="relative min-h-screen overflow-hidden bg-[#12141c] px-6 py-24">
         <div className="absolute inset-0 bg-gradient-to-b from-[#12141c] via-[#141620] to-[#12141c]" />
-        <div className="absolute left-1/2 top-28 h-[420px] w-[720px] -translate-x-1/2 rounded-full bg-blue-600/[0.05] blur-3xl" />
+  
 
         <div className="relative mx-auto max-w-lg text-center">
           <div className="rounded-[32px] border border-slate-800/70 bg-surface/90 p-8 shadow-2xl shadow-black/40 sm:p-12">
@@ -118,7 +118,7 @@ export default function BookDemoPage() {
               We have received your request and will get back to you shortly to schedule your demo.
             </p>
             <div className="mt-8">
-              <Button href="/" variant="accent">
+              <Button href="/" variant="primary">
                 Return home
               </Button>
             </div>
@@ -129,9 +129,9 @@ export default function BookDemoPage() {
   }
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#12141c] px-6 py-24">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#12141c] via-[#141620] to-[#12141c]" />
-      <div className="absolute left-1/2 top-28 h-[420px] w-[720px] -translate-x-1/2 rounded-full bg-blue-600/[0.05] blur-3xl" />
+    <main className="relative min-h-screen overflow-hidden bg-background px-6 py-24">
+      <div className="absolute inset-0 bg-background" />
+
 
       <div className="relative mx-auto max-w-3xl">
         <Link
@@ -288,7 +288,7 @@ export default function BookDemoPage() {
               <p className="max-w-md text-sm leading-relaxed text-slate-500">
                 We will reach out within 24-48 hours to schedule your demo.
               </p>
-              <Button type="submit" variant="accent" size="md" loading={loading}>
+              <Button type="submit" variant="primary" size="md" loading={loading}>
                 {loading ? "Submitting" : "Request Demo"}
               </Button>
             </div>

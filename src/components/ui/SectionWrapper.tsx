@@ -15,8 +15,8 @@ export default function SectionWrapper({
   narrow = false,
 }: SectionWrapperProps) {
   return (
-    <section id={id} className={cn("relative py-32 px-6", className)}>
-      <div className={cn("mx-auto", narrow ? "max-w-3xl" : "max-w-5xl")}>
+    <section id={id} className={cn("relative py-40 px-6 sm:px-8", className)}>
+      <div className={cn("mx-auto", narrow ? "max-w-3xl" : "max-w-6xl")}>
         {children}
       </div>
     </section>

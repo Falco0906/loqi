@@ -57,10 +57,10 @@ export default function PricingSection() {
           <p className="text-sm uppercase tracking-widest text-accent-light/70 mb-4 font-medium">
             Pricing
           </p>
-          <h2 className="text-display-sm font-semibold text-white">
+          <h2 className="text-display-sm font-semibold text-foreground">
             Simple, transparent pricing
           </h2>
-          <p className="text-body text-slate-500 mt-4 max-w-2xl mx-auto">
+          <p className="text-body text-tertiary mt-4 max-w-2xl mx-auto">
             Founding pricing available for early customers. All plans include a
             free trial. No hidden fees.
           </p>
@@ -73,32 +73,32 @@ export default function PricingSection() {
               className={`relative rounded-[28px] border p-8 transition-all duration-500 ${
                 tier.highlighted
                   ? "border-accent/40 bg-accent/5 shadow-lg shadow-accent/5"
-                  : "border-slate-800/60 bg-surface hover:border-slate-700/60"
+                  : "border-border bg-surface hover:border-border"
               }`}
             >
               {tier.highlighted && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-accent px-4 py-1 text-[11px] font-medium uppercase tracking-wider text-white">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-accent px-4 py-1 text-[11px] font-medium uppercase tracking-wider text-foreground">
                   Most popular
                 </div>
               )}
 
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-white">{tier.name}</h3>
-                <p className="mt-1 text-sm text-slate-500">{tier.description}</p>
+                <h3 className="text-lg font-semibold text-foreground">{tier.name}</h3>
+                <p className="mt-1 text-sm text-tertiary">{tier.description}</p>
               </div>
 
               <div className="mb-6">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-semibold text-white">{tier.foundingPrice}</span>
-                  <span className="text-sm text-slate-500">/month</span>
-                  <span className="ml-2 text-sm text-slate-600 line-through">{tier.regularPrice}</span>
+                  <span className="text-4xl font-semibold text-foreground">{tier.foundingPrice}</span>
+                  <span className="text-sm text-tertiary">/month</span>
+                  <span className="ml-2 text-sm text-tertiary line-through">{tier.regularPrice}</span>
                 </div>
                 <p className="mt-1 text-xs text-emerald-400">Founding price — limited time</p>
               </div>
 
               <ul className="mb-8 space-y-3">
                 {tier.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-3 text-sm text-slate-300">
+                  <li key={feature} className="flex items-start gap-3 text-sm text-secondary">
                     <svg className="mt-0.5 w-4 h-4 shrink-0 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
@@ -109,7 +109,7 @@ export default function PricingSection() {
 
               <Button
                 href="/book-demo"
-                variant={tier.highlighted ? "accent" : "secondary"}
+                variant={tier.highlighted ? "primary" : "secondary"}
                 className="w-full"
               >
                 Book a Demo
@@ -120,14 +120,14 @@ export default function PricingSection() {
 
         {/* Enterprise */}
         <div className="mt-8 animate-on-scroll">
-          <div className="rounded-[28px] border border-slate-800/60 bg-surface p-8 text-center">
-            <h3 className="text-lg font-semibold text-white">Enterprise</h3>
-            <p className="mt-2 text-sm text-slate-500 max-w-xl mx-auto">
+          <div className="rounded-[28px] border border-border bg-surface p-8 text-center">
+            <h3 className="text-lg font-semibold text-foreground">Enterprise</h3>
+            <p className="mt-2 text-sm text-tertiary max-w-xl mx-auto">
               Custom lead volumes, dedicated infrastructure, team collaboration,
               SSO, and personalized onboarding. Contact us for a tailored plan.
             </p>
             <div className="mt-6">
-              <Button href="/book-demo" variant="accent">
+              <Button href="/book-demo" variant="primary">
                 Contact Sales
               </Button>
             </div>
@@ -136,9 +136,9 @@ export default function PricingSection() {
 
         {/* Free tier note */}
         <div className="mt-6 text-center animate-on-scroll">
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-tertiary">
             Have a small team? Our{" "}
-            <span className="text-slate-300">Free</span> plan is available
+            <span className="text-secondary">Free</span> plan is available
             for individuals getting started.
           </p>
         </div>

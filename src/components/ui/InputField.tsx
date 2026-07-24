@@ -26,7 +26,7 @@ export default function InputField({
     <div className={className}>
       <label
         htmlFor={id}
-        className="block text-[15px] text-slate-300 mb-3 font-medium"
+        className="block text-label-lg text-foreground mb-2 font-medium"
       >
         {label}
       </label>
@@ -37,14 +37,14 @@ export default function InputField({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         className={cn(
-          "w-full bg-[#1e2028] border rounded-2xl px-6 py-[18px] text-[16px] text-white placeholder:text-slate-600 outline-none transition-all duration-300",
+          "w-full bg-surface border rounded-lg px-4 py-3 text-body text-foreground placeholder:text-tertiary outline-none transition-all duration-200 focus:ring-1 focus:ring-accent/40",
           error
-            ? "border-red-500/40 focus:border-red-500/60"
-            : "border-slate-800/30 focus:border-slate-600/60 focus:bg-[#222430]"
+            ? "border-error focus:border-error focus:ring-error/30"
+            : "border-border focus:border-accent/40"
         )}
       />
       {error && (
-        <p className="text-sm text-red-400/80 mt-2 pl-1">{error}</p>
+        <p className="text-sm text-error mt-1.5">{error}</p>
       )}
     </div>
   );

@@ -5,9 +5,9 @@ import Button from "@/components/ui/Button";
 
 export default function AccessPage() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#12141c] px-6 py-24">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#12141c] via-[#141620] to-[#12141c]" />
-      <div className="absolute left-1/2 top-28 h-[420px] w-[720px] -translate-x-1/2 rounded-full bg-blue-600/[0.05] blur-3xl" />
+    <main className="relative min-h-screen overflow-hidden bg-background px-6 py-24">
+      <div className="absolute inset-0 bg-background" />
+
 
       <div className="relative mx-auto max-w-3xl">
         <Link
@@ -36,7 +36,7 @@ export default function AccessPage() {
           </div>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Button href="/book-demo" variant="accent">
+            <Button href="/book-demo" variant="primary">
               Book a Demo
             </Button>
             <Button href="/" variant="secondary">

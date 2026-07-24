@@ -63,10 +63,10 @@ export default function HowItWorks() {
     <section id="how-it-works" className="relative py-32 px-6">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-20 animate-on-scroll">
-          <p className="text-sm uppercase tracking-widest text-accent-light/70 mb-4 font-medium">
+          <p className="text-sm uppercase tracking-widest text-tertiary/70 mb-4 font-medium">
             How it works
           </p>
-          <h2 className="text-display-sm font-semibold text-white">
+          <h2 className="text-display-sm font-semibold text-foreground">
             From setup to results. One workspace.
           </h2>
         </div>
@@ -76,19 +76,19 @@ export default function HowItWorks() {
             <div key={step.number} className="relative group">
               {/* Connector line */}
               {i < steps.length - 1 && (
-                <div className="hidden md:block absolute top-8 left-[calc(50%+24px)] w-[calc(100%-48px)] h-px bg-gradient-to-r from-slate-700/60 to-slate-800/30" />
+                <div className="hidden md:block absolute top-8 left-[calc(50%+24px)] w-[calc(100%-48px)] h-px bg-border" />
               )}
               <div className="flex flex-col items-center text-center p-4">
-                <div className="w-14 h-14 rounded-2xl bg-surface-light border border-slate-700/40 flex items-center justify-center text-accent-light mb-5 group-hover:border-accent/30 group-hover:bg-accent-muted transition-all duration-500">
+                <div className="w-14 h-14 rounded-2xl bg-surface-light border border-border flex items-center justify-center text-accent mb-5 group-hover:border-border group-hover:bg-accent-muted transition-all duration-500">
                   {step.icon}
                 </div>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-slate-600 mb-2 font-medium">
+                <span className="text-[10px] uppercase tracking-[0.2em] text-tertiary mb-2 font-medium">
                   {step.number}
                 </span>
-                <h3 className="text-sm font-semibold text-white mb-2">
+                <h3 className="text-sm font-semibold text-foreground mb-2">
                   {step.title}
                 </h3>
-                <p className="text-xs text-slate-500 leading-relaxed">
+                <p className="text-xs text-tertiary leading-relaxed">
                   {step.description}
                 </p>
               </div>
