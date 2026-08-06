@@ -1,21 +1,29 @@
 import DesktopWindow from "../ui/DesktopWindow";
+import MissionControlMock from "../mocks/MissionControlMock";
+import DiscoveryMock from "../mocks/DiscoveryMock";
+import InboxMock from "../mocks/InboxMock";
+import CampaignsMock from "../mocks/CampaignsMock";
 
 const showcases = [
   {
     title: "Mission Control",
     description: "The command center for your entire outbound operation.",
+    mock: <MissionControlMock />,
   },
   {
     title: "Lead Discovery",
     description: "Find and enrich companies and decision makers effortlessly.",
+    mock: <DiscoveryMock />,
   },
   {
     title: "Review Queue",
     description: "Human oversight for trust-first, AI-generated outreach.",
+    mock: <InboxMock />,
   },
   {
     title: "Campaign Analytics",
     description: "Real-time performance tracking and optimization.",
+    mock: <CampaignsMock />,
   },
 ];
 
@@ -40,8 +48,8 @@ export default function WorkspaceTour() {
             <div key={index} className="group flex flex-col gap-6">
               <div className="transition-transform duration-500 ease-out group-hover:-translate-y-2">
                 <DesktopWindow>
-                  <div className="h-[400px] w-full bg-surface-hover flex items-center justify-center text-tertiary">
-                    {showcase.title} Screenshot
+                  <div className="h-[460px] overflow-hidden">
+                    {showcase.mock}
                   </div>
                 </DesktopWindow>
               </div>
