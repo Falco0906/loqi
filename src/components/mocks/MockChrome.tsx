@@ -64,13 +64,12 @@ const sidebarLight = {
   profileRole: "text-[#444748]",
 };
 
-export function MockSidebar({ active, items, tone, brand = "Loqi AI", bottom, cta, profile }: MockSidebarProps) {
+export function MockSidebar({ active, items, tone, brand = "Loqi", bottom, cta, profile }: MockSidebarProps) {
   const s = tone === "dark" ? sidebarDark : sidebarLight;
   return (
     <aside className={`w-44 shrink-0 border-r flex flex-col py-6 px-4 ${s.shell}`}>
       <div className="mb-6 px-2">
         <p className={`text-[13px] font-semibold ${s.brand}`}>{brand}</p>
-        <p className={`text-[9px] uppercase tracking-[0.15em] mt-0.5 ${s.tagline}`}>Chief of Staff</p>
       </div>
       {cta && (
         <div className={`mb-6 mx-2 text-center py-2 rounded-full text-[11px] font-medium ${s.cta}`}>

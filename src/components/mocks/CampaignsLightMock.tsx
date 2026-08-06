@@ -33,7 +33,7 @@ export default function CampaignsLightMock() {
       tone="light"
       active="campaign"
       items={navItems}
-      profile={{ name: "LOQI AI", role: "ONLINE", initials: "LO" }}
+      profile={{ name: "LOQI", role: "ONLINE", initials: "LO" }}
       topbar={<MockTopbar tone="light" title="Directives" tabs={["Directives", "Summaries", "Archive"]} />}
     >
       <div className="px-8 py-8 max-w-2xl mx-auto space-y-8">

@@ -44,7 +44,7 @@ export default function InboxLightMock() {
       tone="light"
       active="inbox"
       items={navItems}
-      profile={{ name: "LOQI AI", role: "Chief of Staff", initials: "LO" }}
+      profile={{ name: "LOQI", role: "", initials: "LO" }}
       topbar={<MockTopbar tone="light" title="Inbox" tabs={["Directives", "Summaries", "Archive"]} search="Search directives..." />}
     >
       <div className="px-8 py-8 max-w-2xl mx-auto space-y-5">
