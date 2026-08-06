@@ -20,9 +20,10 @@ const milestones = [
 export default function CampaignsMock() {
   return (
     <MockShell
+      tone="dark"
       active="campaign"
       items={navItems}
-      topbar={<MockTopbar title="Directives" tabs={["Directives", "Summaries", "Archive"]} />}
+      topbar={<MockTopbar tone="dark" title="Directives" tabs={["Directives", "Summaries", "Archive"]} />}
     >
       <div className="px-8 py-8 max-w-2xl mx-auto space-y-8">
         {/* Narrative */}

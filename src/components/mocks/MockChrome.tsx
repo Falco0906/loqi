@@ -1,5 +1,7 @@
 import React from "react";
 
+export type MockTone = "dark" | "light";
+
 const navIcons: Record<string, React.ReactNode> = {
   dashboard: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>,
   explore: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5 5-2z"/></svg>,
@@ -16,30 +18,71 @@ const navIcons: Record<string, React.ReactNode> = {
   mail: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-8.97 5.7a1.94 1.94 0 01-2.06 0L2 7"/></svg>,
   person: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0114 0v1"/></svg>,
   sparkle: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4L12 2z"/></svg>,
+  add: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4"><path d="M12 5v14M5 12h14"/></svg>,
+  help: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 115 0c0 1.7-2.5 2.1-2.5 4"/><path d="M12 17.5h.01"/></svg>,
+  filter: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4"><path d="M3 6h18M6 12h12M10 18h4"/></svg>,
+  checkCircle: <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm-1.2 14.5l-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4-7 7z"/></svg>,
+  arrowUp: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4"><path d="M12 19V5M5 12l7-7 7 7"/></svg>,
+  send: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4"><path d="M5 12h14M12 5l7 7-7 7"/></svg>,
 };
 
 interface MockSidebarProps {
   active: string;
   items: { id: string; label: string }[];
+  tone: MockTone;
   brand?: string;
   bottom?: { id: string; label: string }[];
+  cta?: string;
+  profile?: { name: string; role: string; initials: string };
 }
 
-export function MockSidebar({ active, items, brand = "Loqi AI", bottom }: MockSidebarProps) {
+const sidebarDark = {
+  shell: "bg-[#141313] border-[#4a4549]/20",
+  brand: "text-[#e6e2e1]",
+  tagline: "text-[#ccc4c9] opacity-60",
+  active: "text-white bg-[#201f1f]",
+  inactive: "text-[#ccc4c9]/80 hover:text-white",
+  bottom: "text-[#ccc4c9]/70",
+  border: "border-[#4a4549]/20",
+  cta: "bg-white text-[#313030] hover:bg-white/90",
+  profile: "bg-[#2b2a2a]",
+  profileName: "text-[#e6e2e1]",
+  profileRole: "text-[#ccc4c9]",
+};
+
+const sidebarLight = {
+  shell: "bg-[#f7f3f2] border-[#c4c7c7]/30",
+  brand: "text-[#1c1b1b]",
+  tagline: "text-[#444748] opacity-60",
+  active: "text-[#1c1b1b] bg-[#e5e2e1] font-semibold",
+  inactive: "text-[#444748]/80 hover:text-[#1c1b1b]",
+  bottom: "text-[#444748]/70",
+  border: "border-[#c4c7c7]/40",
+  cta: "bg-black text-white hover:bg-black/90",
+  profile: "bg-[#e5e2e1]",
+  profileName: "text-[#1c1b1b]",
+  profileRole: "text-[#444748]",
+};
+
+export function MockSidebar({ active, items, tone, brand = "Loqi AI", bottom, cta, profile }: MockSidebarProps) {
+  const s = tone === "dark" ? sidebarDark : sidebarLight;
   return (
-    <aside className="w-44 shrink-0 bg-[#141313] border-r border-[#4a4549]/20 flex flex-col py-6 px-4">
-      <div className="mb-8 px-2">
-        <p className="text-[13px] font-semibold text-[#e6e2e1]">{brand}</p>
-        <p className="text-[9px] uppercase tracking-[0.15em] text-[#ccc4c9] opacity-60 mt-0.5">Chief of Staff</p>
+    <aside className={`w-44 shrink-0 border-r flex flex-col py-6 px-4 ${s.shell}`}>
+      <div className="mb-6 px-2">
+        <p className={`text-[13px] font-semibold ${s.brand}`}>{brand}</p>
+        <p className={`text-[9px] uppercase tracking-[0.15em] mt-0.5 ${s.tagline}`}>Chief of Staff</p>
       </div>
+      {cta && (
+        <div className={`mb-6 mx-2 text-center py-2 rounded-full text-[11px] font-medium ${s.cta}`}>
+          {cta}
+        </div>
+      )}
       <nav className="flex-1 space-y-0.5">
         {items.map((item) => (
           <div
             key={item.id}
             className={`flex items-center gap-2.5 px-2 py-1.5 rounded-md text-[11px] ${
-              active === item.id
-                ? "text-white font-medium bg-[#201f1f]"
-                : "text-[#ccc4c9]/80 hover:text-white"
+              active === item.id ? s.active : s.inactive
             }`}
           >
             {navIcons[item.id]}
@@ -47,10 +90,21 @@ export function MockSidebar({ active, items, brand = "Loqi AI", bottom }: MockSi
           </div>
         ))}
       </nav>
-      {bottom && (
-        <div className="space-y-0.5 pt-4 mt-2 border-t border-[#4a4549]/20">
+      {profile && (
+        <div className={`pt-4 mt-2 flex items-center gap-2.5 border-t ${s.border}`}>
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-semibold ${s.profile} ${s.profileName}`}>
+            {profile.initials}
+          </div>
+          <div>
+            <p className={`text-[9px] font-bold leading-tight ${s.profileName}`}>{profile.name}</p>
+            <p className={`text-[8px] mt-0.5 ${s.profileRole}`}>{profile.role}</p>
+          </div>
+        </div>
+      )}
+      {!profile && bottom && (
+        <div className={`space-y-0.5 pt-4 mt-2 border-t ${s.border}`}>
           {bottom.map((item) => (
-            <div key={item.id} className="flex items-center gap-2.5 px-2 py-1.5 rounded-md text-[11px] text-[#ccc4c9]/70">
+            <div key={item.id} className={`flex items-center gap-2.5 px-2 py-1.5 rounded-md text-[11px] ${s.bottom}`}>
               {navIcons[item.id]}
               <span>{item.label}</span>
             </div>
@@ -63,23 +117,44 @@ export function MockSidebar({ active, items, brand = "Loqi AI", bottom }: MockSi
 
 interface MockTopbarProps {
   title: string;
+  tone: MockTone;
   tabs?: string[];
   search?: string;
+  right?: string;
 }
 
-export function MockTopbar({ title, tabs, search }: MockTopbarProps) {
+const topbarDark = {
+  shell: "bg-[#0f0e0e]/80 border-[#4a4549]/20",
+  title: "text-white",
+  tabActive: "text-white border-white",
+  tabInactive: "text-[#ccc4c9]/70",
+  search: "bg-[#201f1f] text-[#ccc4c9]/60",
+  right: "text-[#ccc4c9]/70",
+};
+
+const topbarLight = {
+  shell: "bg-[#fdf8f8]/70 border-[#c4c7c7]/20",
+  title: "text-[#1c1b1b]",
+  tabActive: "text-[#1c1b1b] border-[#1c1b1b]",
+  tabInactive: "text-[#444748]/70",
+  search: "bg-[#f7f3f2] text-[#444748]/60",
+  right: "text-[#444748]/70",
+};
+
+export function MockTopbar({ title, tone, tabs, search, right }: MockTopbarProps) {
+  const t = tone === "dark" ? topbarDark : topbarLight;
   return (
-    <header className="h-12 shrink-0 bg-[#0f0e0e]/80 backdrop-blur border-b border-[#4a4549]/20 px-6 flex items-center justify-between">
+    <header className={`h-12 shrink-0 backdrop-blur border-b px-6 flex items-center justify-between ${t.shell}`}>
       <div className="flex items-center gap-6">
-        <span className="text-[13px] font-medium text-white">{title}</span>
+        <span className={`text-[13px] font-medium ${t.title}`}>{title}</span>
         {tabs && (
           <nav className="flex gap-4">
             {tabs.map((tab, i) => (
               <span
                 key={tab}
                 className={`text-[10px] uppercase tracking-[0.12em] pb-0.5 ${
-                  i === 0 ? "text-white border-b border-white" : "text-[#ccc4c9]/70"
-                }`}
+                  i === 0 ? t.tabActive : t.tabInactive
+                } ${i === 0 ? "border-b" : ""}`}
               >
                 {tab}
               </span>
@@ -89,27 +164,32 @@ export function MockTopbar({ title, tabs, search }: MockTopbarProps) {
       </div>
       <div className="flex items-center gap-3">
         {search && (
-          <div className="hidden sm:flex items-center gap-1.5 bg-[#201f1f] rounded-full px-3 py-1 text-[10px] text-[#ccc4c9]/60">
+          <div className={`hidden sm:flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] ${t.search}`}>
             {navIcons.search}
             <span>{search}</span>
           </div>
         )}
-        <span className="text-[#ccc4c9]/70">{navIcons.bell}</span>
+        {right && <span className={`text-[10px] ${t.right}`}>{right}</span>}
+        <span className={t.right}>{navIcons.bell}</span>
       </div>
     </header>
   );
 }
 
-export function MockShell({ active, items, topbar, bottom, children }: {
+export function MockShell({ active, items, tone, topbar, bottom, cta, profile, children }: {
   active: string;
   items: { id: string; label: string }[];
+  tone: MockTone;
   topbar: React.ReactNode;
   bottom?: { id: string; label: string }[];
+  cta?: string;
+  profile?: { name: string; role: string; initials: string };
   children: React.ReactNode;
 }) {
+  const shellBg = tone === "dark" ? "bg-[#0f0e0e] text-[#e6e2e1]" : "bg-[#fdf8f8] text-[#1c1b1b]";
   return (
-    <div className="bg-[#0f0e0e] text-[#e6e2e1] flex h-full min-h-[520px]">
-      <MockSidebar active={active} items={items} bottom={bottom} />
+    <div className={`${shellBg} flex h-full min-h-[520px]`}>
+      <MockSidebar active={active} items={items} tone={tone} bottom={bottom} cta={cta} profile={profile} />
       <div className="flex-1 flex flex-col min-w-0">
         {topbar}
         <div className="flex-1 overflow-hidden">{children}</div>

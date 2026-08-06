@@ -31,9 +31,10 @@ const decisions = [
 export default function InboxMock() {
   return (
     <MockShell
+      tone="dark"
       active="inbox"
       items={navItems}
-      topbar={<MockTopbar title="Inbox" tabs={["Directives", "Summaries", "Archive"]} search="Search directives..." />}
+      topbar={<MockTopbar tone="dark" title="Inbox" tabs={["Directives", "Summaries", "Archive"]} search="Search directives..." />}
     >
       <div className="px-8 py-8 max-w-2xl mx-auto space-y-5">
         <div className="text-center md:text-left mb-6">

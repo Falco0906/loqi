@@ -18,9 +18,10 @@ const leads = [
 export default function DiscoveryMock() {
   return (
     <MockShell
+      tone="dark"
       active="explore"
       items={navItems}
-      topbar={<MockTopbar title="Discovery" search="Research a different market..." />}
+      topbar={<MockTopbar tone="dark" title="Discovery" search="Research a different market..." />}
     >
       <div className="px-8 py-8 max-w-3xl mx-auto space-y-6">
         {/* Narrative briefing */}

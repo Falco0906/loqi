@@ -12,9 +12,10 @@ const navItems = [
 export default function MissionControlMock() {
   return (
     <MockShell
+      tone="dark"
       active="dashboard"
       items={navItems}
-      topbar={<MockTopbar title="Briefing" tabs={["Focus", "Archive", "Drafts"]} search="Search briefings..." />}
+      topbar={<MockTopbar tone="dark" title="Briefing" tabs={["Focus", "Archive", "Drafts"]} search="Search briefings..." />}
     >
       <div className="px-8 py-8 max-w-2xl mx-auto space-y-8">
         {/* Briefing message */}

@@ -1,29 +1,38 @@
 import DesktopWindow from "../ui/DesktopWindow";
+import MockThemeSwitcher from "../mocks/MockThemeSwitcher";
 import MissionControlMock from "../mocks/MissionControlMock";
+import MissionControlLightMock from "../mocks/MissionControlLightMock";
 import DiscoveryMock from "../mocks/DiscoveryMock";
+import DiscoveryLightMock from "../mocks/DiscoveryLightMock";
 import InboxMock from "../mocks/InboxMock";
+import InboxLightMock from "../mocks/InboxLightMock";
 import CampaignsMock from "../mocks/CampaignsMock";
+import CampaignsLightMock from "../mocks/CampaignsLightMock";
 
 const showcases = [
   {
     title: "Mission Control",
     description: "The command center for your entire outbound operation.",
-    mock: <MissionControlMock />,
+    dark: <MissionControlMock />,
+    light: <MissionControlLightMock />,
   },
   {
     title: "Lead Discovery",
     description: "Find and enrich companies and decision makers effortlessly.",
-    mock: <DiscoveryMock />,
+    dark: <DiscoveryMock />,
+    light: <DiscoveryLightMock />,
   },
   {
     title: "Review Queue",
     description: "Human oversight for trust-first, AI-generated outreach.",
-    mock: <InboxMock />,
+    dark: <InboxMock />,
+    light: <InboxLightMock />,
   },
   {
     title: "Campaign Analytics",
     description: "Real-time performance tracking and optimization.",
-    mock: <CampaignsMock />,
+    dark: <CampaignsMock />,
+    light: <CampaignsLightMock />,
   },
 ];
 
@@ -49,7 +58,10 @@ export default function WorkspaceTour() {
               <div className="transition-transform duration-500 ease-out group-hover:-translate-y-2">
                 <DesktopWindow>
                   <div className="h-[460px] overflow-hidden">
-                    {showcase.mock}
+                    <MockThemeSwitcher
+                      dark={showcase.dark}
+                      light={showcase.light}
+                    />
                   </div>
                 </DesktopWindow>
               </div>
