@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable react/no-unescaped-entities */
+
 import LegalPageLayout from "@/components/ui/LegalPageLayout";
 import SectionTitle from "@/components/ui/SectionTitle";
 import ParagraphBlock from "@/components/ui/ParagraphBlock";
