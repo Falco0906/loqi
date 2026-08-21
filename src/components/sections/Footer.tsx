@@ -7,7 +7,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-6">
             <a href="#" className="text-lg font-semibold text-foreground tracking-tight">
-              loqi
+              Loqi
             </a>
             <span className="text-sm text-tertiary">
               AI-Native Outbound Workspace
