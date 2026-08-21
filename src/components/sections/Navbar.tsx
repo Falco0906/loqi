@@ -23,7 +23,7 @@ export default function Navbar() {
     >
       <div className="max-w-6xl mx-auto px-6 sm:px-8 h-20 flex items-center justify-between">
         <a href="#" className="text-xl font-semibold tracking-tight text-foreground">
-          loqi
+          Loqi
         </a>
 
         <div className="hidden md:flex items-center gap-8">
