@@ -2,41 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
-/* ===== Light Theme (default) ===== */
+/* One shared, dark-only product palette. */
 :root {
-  --bg: 238 235 228;
-  --surface: 248 245 240;
-  --surface-hover: 255 255 255;
-  --surface-elevated: 255 255 255;
-  --text-primary: 26 24 22;
-  --text-secondary: 112 108 103;
-  --text-tertiary: 156 151 145;
-  --accent: 115 107 95;
-  --accent-hover: 103 95 84;
-  --success: 74 122 90;
-  --error: 144 74 74;
-  --warning: 160 128 64;
-
-  --border: rgba(0, 0, 0, 0.07);
-  --border-strong: rgba(0, 0, 0, 0.12);
-  --overlay: rgba(0, 0, 0, 0.3);
-  --bg-hex: #EEEBE4;
-  --text-primary-hex: #1A1816;
-}
-
-/* ===== Dark Theme ===== */
-[data-theme="dark"] {
-  --bg: 14 13 12;
-  --surface: 20 19 17;
-  --surface-hover: 26 24 22;
-  --surface-elevated: 30 28 25;
-  --text-primary: 232 227 222;
-  --text-secondary: 142 138 133;
-  --text-tertiary: 97 93 89;
-  --accent: 175 164 150;
-  --accent-hover: 189 179 166;
+  color-scheme: dark;
+  --bg: 23 23 22;
+  --surface: 34 35 33;
+  --surface-hover: 44 46 42;
+  --surface-elevated: 44 46 42;
+  --text-primary: 242 238 229;
+  --text-secondary: 192 197 185;
+  --text-tertiary: 173 182 167;
+  --accent: 189 211 187;
+  --accent-hover: 229 237 223;
   --success: 106 154 122;
   --error: 168 106 106;
   --warning: 184 148 74;
@@ -44,8 +21,8 @@
   --border: rgba(255, 255, 255, 0.06);
   --border-strong: rgba(255, 255, 255, 0.1);
   --overlay: rgba(0, 0, 0, 0.6);
-  --bg-hex: #0E0D0C;
-  --text-primary-hex: #E8E3DE;
+  --bg-hex: #171716;
+  --text-primary-hex: #f2eee5;
 }
 
 * {
@@ -66,7 +43,7 @@ html {
 body {
   background: var(--bg-hex);
   color: var(--text-primary-hex);
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: var(--demo-sans), system-ui, sans-serif;
 }
 
 ::selection {

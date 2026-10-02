@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import ThemeToggle from "../theme/ThemeToggle";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -46,7 +45,6 @@ export default function Navbar() {
             Pricing
           </a>
           <div className="flex items-center gap-4 pl-4 border-l border-border">
-            <ThemeToggle />
             <a
               href="/book-demo"
               className="text-label-md px-5 py-2.5 rounded-lg bg-accent text-background font-medium hover:bg-accent-light transition-all duration-200"
@@ -58,7 +56,6 @@ export default function Navbar() {
 
         {/* Mobile menu button */}
         <div className="flex md:hidden items-center gap-3">
-          <ThemeToggle />
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-secondary hover:text-foreground transition-colors duration-200"

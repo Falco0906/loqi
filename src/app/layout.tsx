@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import localFont from "next/font/local";
+
+const sans = localFont({ src: "./fonts/GeistVF.woff", variable: "--demo-sans", weight: "100 900", display: "swap" });
+const mono = localFont({ src: "./fonts/GeistMonoVF.woff", variable: "--demo-mono", weight: "100 900", display: "swap" });
+const editorial = localFont({ src: [{ path: "./fonts/LibreCaslonText-Regular.ttf", weight: "400", style: "normal" }, { path: "./fonts/LibreCaslonText-Italic.ttf", weight: "400", style: "italic" }], variable: "--editorial", display: "swap" });
 
 export const metadata: Metadata = {
   title: "Loqi — AI-Native Outbound Workspace",
@@ -13,23 +18,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                var theme = localStorage.getItem('loqi-theme');
-                if (!theme) {
-                  theme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-                }
-                document.documentElement.setAttribute('data-theme', theme);
-              })();
-            `,
-          }}
-        />
-      </head>
-      <body>{children}</body>
+    <html lang="en" data-theme="dark">
+      <body className={`${sans.variable} ${mono.variable} ${editorial.variable}`}>{children}</body>
     </html>
   );
 }

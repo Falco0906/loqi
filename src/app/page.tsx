@@ -1,32 +1,32 @@
-"use client";
+import type { Metadata } from "next";
+import { Nav, Hero, Lanes, Comparison, Principles, EarlyAccess, FinalCTA, Footer } from "@/components/landing/PageSections";
+import WorkflowDemo from "@/components/sections/workflow-demo/WorkflowDemo";
+import styles from "@/components/landing/Landing.module.css";
 
-import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-import Navbar from "@/components/sections/Navbar";
-import Hero from "@/components/sections/Hero";
-import ProductShowcase from "@/components/sections/ProductShowcase";
-import AIWorkflow from "@/components/sections/AIWorkflow";
-import WorkspaceTour from "@/components/sections/WorkspaceTour";
-import WhySwitch from "@/components/sections/WhySwitch";
-import Trust from "@/components/sections/Trust";
-import PricingSection from "@/components/sections/PricingSection";
-import OnboardingForm from "@/components/sections/OnboardingForm";
-import Footer from "@/components/sections/Footer";
+const description = "Loqi researches your market, finds the people worth talking to, and prepares personalized outreach. You approve every message. Now in Beta.";
+export const metadata: Metadata = {
+  title: "Loqi — Find the people worth reaching",
+  description,
+  alternates: { canonical: "https://www.tryloqi.com" },
+  openGraph: { title: "Loqi — Find the people worth reaching", description, url: "https://www.tryloqi.com", siteName: "Loqi", type: "website" },
+  twitter: { card: "summary", title: "Loqi — Find the people worth reaching", description },
+};
 
 export default function Home() {
-  useScrollAnimation();
-
   return (
-    <main className="relative overflow-x-hidden">
-      <Navbar />
-      <Hero />
-      <ProductShowcase />
-      <AIWorkflow />
-      <WorkspaceTour />
-      <WhySwitch />
-      <Trust />
-      <PricingSection />
-      <OnboardingForm />
+    <div className={styles.landing}>
+      <a className="skip-link" href="#top">Skip to content</a>
+      <Nav />
+      <main id="top">
+        <Hero />
+        <WorkflowDemo />
+        <Lanes />
+        <Comparison />
+        <Principles />
+        <EarlyAccess />
+        <FinalCTA />
+      </main>
       <Footer />
-    </main>
+    </div>
   );
 }
