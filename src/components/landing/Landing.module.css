@@ -35,7 +35,7 @@
 .landing :global(.text-link) { display:inline-flex; gap:14px; align-items:center; text-decoration:none; font-size:14px; padding:12px 0; }
 .landing :global(.text-link span),.landing :global(.btn span) { transition:transform .2s; }
 .landing :global(.text-link:hover span),.landing :global(.btn:hover span) { transform:translate(2px,-2px); }
-.landing :global(.nav) { position:sticky; top:20px; z-index:40; width:min(1320px,calc(100% - 48px)); margin:20px auto 0; background:var(--bg); border:1px solid var(--line); border-radius:20px; box-shadow:0 8px 24px -18px #000; }
+.landing :global(.nav) { position:sticky; top:20px; z-index:40; width:min(1320px,calc(100% - 48px)); margin:20px auto 0; background:var(--bg); border:1px solid var(--line); border-radius:20px; box-shadow:0 3px 14px -10px rgb(0 0 0 / 32%); }
 .landing :global(.nav-in) { display:flex; align-items:center; gap:12px; height:var(--nav-h); width:100%; padding-inline:28px; }
 .landing :global(.logo) { display:flex; text-decoration:none; }
 .landing :global(.beta) { border:1px solid var(--line-2); border-radius:99px; font-size:10px; padding:2px 7px; color:var(--muted); }
