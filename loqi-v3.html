@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Loqi — Go find your next customers</title>
+<meta name="description" content="Loqi finds the companies, researches them, finds the right person and writes the first message. You approve before anything goes out.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F7F9; --surface:#FFFFFF; --surface-2:#EEF0F4; --line:#E0E3E9; --line-2:#CBD1DA;
+  --text:#0B0D10; --muted:#565D69; --faint:#8C93A0; --meta:#6F7784;
+  --accent:#2557E6; --accent-soft:rgba(37,87,230,.08); --accent-mid:rgba(37,87,230,.17); --accent-line:rgba(37,87,230,.45);
+  --btn-bg:#0B0D10; --btn-ink:#FFFFFF;
+  --shadow:0 1px 2px rgba(11,13,16,.04),0 28px 56px -30px rgba(11,13,16,.25);
+  --nav-h:58px;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#0C0E12; --surface:#13161B; --surface-2:#1A1E25; --line:#232832; --line-2:#333A46;
+  --text:#F2F4F7; --muted:#9AA3B2; --faint:#68707F; --meta:#8891A0;
+  --accent:#6B97FF; --accent-soft:rgba(107,151,255,.11); --accent-mid:rgba(107,151,255,.22); --accent-line:rgba(107,151,255,.5);
+  --btn-bg:#F2F4F7; --btn-ink:#0C0E12;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 28px 56px -30px rgba(0,0,0,.7);
+  color-scheme:dark;
+}
+
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + var(--nav-h) + 16px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.55 Geist,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,p,ul,ol,dl,dd{margin:0}
+ul,ol{padding:0;list-style:none}
+a{color:inherit}
+button{font:inherit;color:inherit}
+[hidden]{display:none!important}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.mono{font-family:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.wrap{width:min(1240px,calc(100% - 40px));margin-inline:auto}
+
+/* page-level buttons: ink */
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 20px;border-radius:8px;border:1px solid transparent;font:500 15px/1 Geist,system-ui,sans-serif;cursor:pointer;text-decoration:none;transition:opacity .15s,background .15s}
+.btn.primary{background:var(--btn-bg);color:var(--btn-ink)}
+.btn.primary:hover{opacity:.85}
+.btn.ghost{background:transparent;border-color:var(--line-2)}
+.btn.ghost:hover{background:var(--surface-2)}
+.btn.sm{min-height:36px;padding:0 14px;font-size:13.5px}
+.link{background:none;border:0;padding:0;color:var(--muted);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.link:hover{color:var(--text)}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:var(--bg);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;gap:14px;height:var(--nav-h)}
+.logo{display:flex;align-items:center;gap:9px;font-weight:600;font-size:19px;letter-spacing:-.03em;text-decoration:none}
+.logo-mark{width:20px;height:20px;border-radius:6px;background:var(--text);position:relative;flex:none}
+.logo-mark::after{content:"";position:absolute;left:5px;top:5px;width:10px;height:10px;border-radius:50%;border:2px solid var(--bg)}
+.beta{font:500 11px/1 "Geist Mono",monospace;color:var(--meta);border:1px solid var(--line-2);border-radius:4px;padding:4px 7px}
+.nav-right{margin-left:auto;display:flex;gap:10px;align-items:center}
+.icon-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--line-2);background:transparent;display:grid;place-items:center;cursor:pointer}
+.icon-btn:hover{background:var(--surface-2)}
+
+/* hero */
+.hero{padding-top:clamp(44px,8vw,104px)}
+.h1{font-size:clamp(3.1rem,9.6vw,8.6rem);font-weight:600;letter-spacing:-.055em;line-height:.94;max-width:12ch}
+.lede{margin-top:28px;font-size:clamp(1.1rem,1.8vw,1.35rem);color:var(--muted);max-width:44ch}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px;align-items:center}
+.cta-note{font:400 12.5px "Geist Mono",monospace;color:var(--meta);margin-left:6px}
+
+/* story: captions + one persistent product window */
+.story{display:grid;grid-template-columns:minmax(250px,320px) minmax(0,1fr);gap:clamp(32px,5vw,72px);margin-top:clamp(40px,6vw,72px)}
+.stage-col{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--nav-h) + 18px);align-self:start;z-index:5}
+.beat{min-height:80vh;min-height:80svh;display:flex;flex-direction:column;justify-content:center;gap:14px;opacity:.45;transition:opacity .3s}
+.beat.on{opacity:1}
+.beat:first-child{min-height:56svh;justify-content:flex-start;padding-top:6px}
+.folio{font:400 12.5px "Geist Mono",monospace;color:var(--meta)}
+.beat h2{font-size:clamp(1.9rem,3vw,2.75rem);font-weight:600;letter-spacing:-.04em;line-height:1.04}
+.beat p{color:var(--muted);font-size:1.05rem;max-width:34ch}
+.beat .hint{font:400 12.5px "Geist Mono",monospace;color:var(--accent);max-width:none}
+
+/* app window */
+.app{display:flex;flex-direction:column;height:min(700px,calc(100vh - var(--nav-h) - 36px));height:min(700px,calc(100svh - var(--nav-h) - 36px));background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);overflow:hidden}
+.app-bar{display:flex;align-items:center;gap:12px;min-height:42px;padding:0 14px;border-bottom:1px solid var(--line);font-size:13px}
+.app-name{font:500 13px/1 "Geist Mono",monospace}
+.app-tab{color:var(--meta)}
+.app-note{margin-left:auto;display:flex;gap:14px;color:var(--meta);font:400 12px "Geist Mono",monospace}
+.app-prog{height:2px;background:var(--line)}
+.app-prog i{display:block;height:100%;width:14%;background:var(--accent);transition:width .4s ease}
+.app-body{flex:1;min-height:0;display:grid;grid-template-columns:148px minmax(0,1fr)}
+.rail{border-right:1px solid var(--line);padding:12px 8px;display:flex;flex-direction:column;gap:2px;background:var(--bg)}
+.rail button{display:flex;gap:10px;align-items:baseline;text-align:left;padding:8px 10px;border:0;border-radius:6px;background:transparent;color:var(--meta);cursor:pointer;font-size:13.5px}
+.rail button:hover{background:var(--surface-2)}
+.rail .i{font:400 11px "Geist Mono",monospace;color:var(--faint)}
+.rail button.past{color:var(--text)}
+.rail button.on{background:var(--accent-soft);color:var(--accent)}
+.rail button.on .i{color:var(--accent)}
+.views{position:relative;min-height:0}
+.view{position:absolute;inset:0;overflow:auto;padding:22px 26px 26px;opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .25s,transform .25s,visibility 0s .25s}
+.view.on{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+.view.flush{padding:0}
+.app-status{display:flex;flex-wrap:wrap;gap:4px 20px;padding:9px 16px;border-top:1px solid var(--line);font:400 12px "Geist Mono",monospace;color:var(--meta)}
+.app-status b{font-weight:500;color:var(--text)}
+
+/* shared product bits */
+.lab{display:block;font:400 12px "Geist Mono",monospace;color:var(--meta);margin-bottom:8px}
+.meta{font-size:13px;color:var(--meta)}
+.v-head{display:flex;justify-content:space-between;gap:16px;align-items:baseline;flex-wrap:wrap;margin-bottom:16px}
+.v-head h3{font-size:clamp(1.3rem,2.2vw,1.75rem);font-weight:600;letter-spacing:-.03em;line-height:1.1}
+.tbl{display:grid}
+.tr{display:grid;gap:14px;align-items:center;padding:11px 12px;border-bottom:1px solid var(--line);font-size:14px;transition:background .12s}
+.tr:not(.th):hover{background:var(--surface-2)}
+.th{padding-block:8px;font:400 12px "Geist Mono",monospace;color:var(--meta)}
+.t-find .tr{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) 84px 84px}
+.t-qual .tr{grid-template-columns:minmax(0,1.3fr) 118px minmax(0,1.5fr)}
+.nm{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dim{color:var(--muted)}
+.tr.skip .nm{color:var(--muted);font-weight:400}
+.tr.skip .why{color:var(--meta)}
+.pct{display:flex;align-items:center;gap:8px;font:500 12.5px "Geist Mono",monospace;font-variant-numeric:tabular-nums}
+.pct .bar{flex:1;height:3px;border-radius:3px;background:var(--line);overflow:hidden}
+.pct .bar i{display:block;height:100%;background:var(--accent)}
+.verdict{display:flex;align-items:center;gap:8px;color:var(--accent);font-size:13.5px}
+.verdict::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.tr.skip .verdict{color:var(--meta)}
+.tr.skip .verdict::before{background:transparent;border:1px solid var(--line-2)}
+
+/* view 0 brief */
+.goal-text{font-size:clamp(1.25rem,2.6vw,2rem);font-weight:500;letter-spacing:-.03em;line-height:1.25;max-width:26ch;min-height:3.8em}
+.caret{display:none;width:2px;height:1em;background:var(--accent);vertical-align:text-bottom;margin-left:2px;animation:blink 1s steps(1) infinite}
+.typing .caret{display:inline-block}
+@keyframes blink{50%{opacity:0}}
+.feed{margin-top:8px}
+.f-row{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:14.5px;color:var(--meta);transition:color .25s}
+.f-ic{width:9px;height:9px;border-radius:50%;border:1px solid var(--line-2);justify-self:center}
+.f-row.active{color:var(--text)}
+.f-row.active .f-ic{border-color:var(--accent);background:var(--accent-mid);animation:pulse 1s ease-in-out infinite}
+.f-row.done{color:var(--text)}
+.f-row.done .f-ic{background:var(--accent);border-color:var(--accent)}
+.f-val{font:400 13px "Geist Mono",monospace;color:var(--accent);text-align:right}
+@keyframes pulse{50%{opacity:.4}}
+.result{margin-top:22px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline;opacity:0;transition:opacity .4s;min-height:40px}
+.result.show{opacity:1}
+.result h3{font-size:clamp(1.4rem,2.6vw,2.1rem);font-weight:600;letter-spacing:-.04em}
+
+/* view 2 criteria */
+.toks{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.tok{display:inline-flex;align-items:center;gap:8px;padding:6px 11px;border:1px solid var(--accent-line);background:var(--accent-soft);color:var(--accent);border-radius:6px;font-size:13px;cursor:pointer;transition:background .12s}
+.tok::before{content:"\2713";font-size:11px}
+.tok[aria-pressed="false"]{background:transparent;border:1px dashed var(--line-2);color:var(--meta);text-decoration:line-through}
+.tok[aria-pressed="false"]::before{content:"";width:9px;height:9px;border:1px solid var(--line-2);border-radius:2px}
+
+/* account tabs */
+.tabs2{display:flex;gap:6px;overflow-x:auto;padding-bottom:16px;margin-bottom:20px;border-bottom:1px solid var(--line)}
+.tab2{flex:none;padding:6px 12px;border:1px solid var(--line);border-radius:6px;background:transparent;font-size:13.5px;color:var(--muted);cursor:pointer}
+.tab2:hover{background:var(--surface-2)}
+.tab2[aria-pressed="true"]{border-color:var(--accent-line);background:var(--accent-soft);color:var(--accent)}
+.acct-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:22px}
+.acct-head h3{font-size:clamp(1.5rem,2.6vw,2.2rem);font-weight:600;letter-spacing:-.04em;line-height:1.05}
+.acct-head .meta{margin-top:6px}
+.fit{text-align:right}
+.fit b{display:block;font-size:clamp(1.8rem,3vw,2.6rem);font-weight:600;letter-spacing:-.05em;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums}
+.fit span{font:400 12px "Geist Mono",monospace;color:var(--meta)}
+.sg{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:12px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line);font-size:15.5px;border-radius:4px;transition:background .12s}
+.ix{font:500 12px "Geist Mono",monospace;color:var(--accent)}
+.src{font:400 12px "Geist Mono",monospace;color:var(--meta);border:1px solid var(--line);border-radius:4px;padding:3px 7px;white-space:nowrap}
+.note{margin-top:16px;font-size:13.5px;color:var(--meta)}
+
+/* view 4 people */
+.people{display:grid;gap:8px}
+.person{width:100%;display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:14px;align-items:center;text-align:left;padding:14px 16px;border:1px solid var(--line);border-radius:8px;background:transparent;cursor:pointer;transition:border-color .12s,background .12s}
+.person:hover{background:var(--surface-2)}
+.person.sel{border-color:var(--accent-line);background:var(--accent-soft)}
+.avatar{width:40px;height:40px;border-radius:50%;border:1px solid var(--line-2);display:grid;place-items:center;font:500 12.5px "Geist Mono",monospace;color:var(--muted)}
+.person.sel .avatar{border-color:var(--accent);color:var(--accent)}
+.pinfo b{display:block;font-weight:500;font-size:15.5px}
+.pinfo span{display:block;font-size:13.5px;color:var(--muted)}
+.pinfo .why{margin-top:4px;color:var(--meta)}
+.rec-tag{font:500 11.5px "Geist Mono",monospace;color:var(--accent);border:1px solid var(--accent-line);border-radius:4px;padding:3px 7px;white-space:nowrap}
+
+/* view 5 draft */
+.dgrid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(220px,1fr);gap:32px}
+.m-meta{font-size:14px;color:var(--muted);margin-bottom:4px}
+.m-meta b{display:inline-block;width:62px;font-weight:400;color:var(--meta)}
+.m-meta span{color:var(--text)}
+.m-body{margin-top:14px;padding-top:16px;border-top:1px solid var(--line);font-size:16px;line-height:1.7}
+.m-body p+p{margin-top:12px}
+.m-body[contenteditable="true"]{outline:1px dashed var(--accent-line);outline-offset:8px;border-radius:4px}
+.ref{border-bottom:1px solid var(--accent-line);cursor:help;transition:background .12s}
+.ref sup{font:500 10px "Geist Mono",monospace;color:var(--accent);margin-left:2px}
+.ref.hl{background:var(--accent-mid)}
+.sg.hl{background:var(--accent-soft);box-shadow:inset 2px 0 0 var(--accent)}
+.sources .sg{grid-template-columns:20px minmax(0,1fr);font-size:14px;padding:12px 6px}
+.sources .sg .src{grid-column:2;justify-self:start;margin-top:4px}
+
+/* view 6 approval */
+.agrid{display:grid;grid-template-columns:minmax(230px,.85fr) minmax(0,1.4fr);height:100%;outline:none}
+.agrid:focus-visible{box-shadow:inset 0 0 0 2px var(--accent)}
+.queue{border-right:1px solid var(--line);overflow:auto}
+.q{width:100%;display:grid;grid-template-columns:16px minmax(0,1fr) auto;gap:10px;align-items:center;text-align:left;padding:13px 14px;border:0;border-bottom:1px solid var(--line);background:transparent;cursor:pointer}
+.q:hover{background:var(--surface-2)}
+.q.sel{background:var(--accent-soft);box-shadow:inset 2px 0 0 var(--accent)}
+.q b{display:block;font-weight:500;font-size:14.5px}
+.q span.sub{display:block;font-size:13px;color:var(--meta);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qs{width:9px;height:9px;border-radius:50%;border:1px solid var(--line-2);justify-self:center}
+.q.approved .qs{background:var(--accent);border-color:var(--accent)}
+.q.rejected .qs{border-style:dashed}
+.q.rejected b{color:var(--meta);text-decoration:line-through}
+.q .tag{font:400 11.5px "Geist Mono",monospace;color:var(--meta)}
+.q.approved .tag{color:var(--accent)}
+.q.more{cursor:default;color:var(--meta);font:400 12.5px "Geist Mono",monospace;display:block}
+.preview{padding:20px 24px;overflow:auto;display:grid;gap:14px;align-content:start}
+.pactions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pbtn{display:inline-flex;align-items:center;min-height:34px;padding:0 12px;border-radius:6px;border:1px solid var(--line-2);background:transparent;font-size:13.5px;cursor:pointer}
+.pbtn:hover{background:var(--surface-2)}
+.pbtn.approve{background:var(--accent);border-color:var(--accent);color:#fff}
+.pbtn.approve:hover{opacity:.9}
+.kbd{font:500 11px "Geist Mono",monospace;border:1px solid currentColor;border-radius:3px;padding:0 5px;margin-left:8px;opacity:.7}
+.state-chip{font:500 12.5px "Geist Mono",monospace;color:var(--accent);border:1px solid var(--accent-line);background:var(--accent-soft);border-radius:4px;padding:5px 9px}
+.state-chip.no{color:var(--meta);border-color:var(--line-2);background:transparent}
+.kb-hint{font:400 12px "Geist Mono",monospace;color:var(--meta)}
+.kb-hint.on{color:var(--accent)}
+
+/* close */
+.close{padding-top:clamp(96px,13vw,180px)}
+.close .h1{font-size:clamp(2.8rem,8.4vw,7.4rem);max-width:12ch}
+.close .lede{margin-top:24px}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,4vw,56px);margin-top:clamp(64px,9vw,120px)}
+.facts>div{border-top:1px solid var(--line-2);padding-top:16px}
+.facts dt{font:400 12.5px "Geist Mono",monospace;color:var(--meta);margin-bottom:8px}
+.facts dd{color:var(--muted);max-width:34ch}
+.one-line{margin-top:44px;color:var(--muted);max-width:60ch}
+.footer{margin-top:clamp(80px,10vw,140px);border-top:1px solid var(--line);padding:26px 0 38px}
+.foot-in{display:flex;flex-wrap:wrap;gap:16px 32px;justify-content:space-between;font-size:14px;color:var(--muted)}
+.foot-links{display:flex;gap:22px}
+.foot-links a{text-decoration:none}.foot-links a:hover{color:var(--text)}
+
+/* narrow */
+@media (max-width:1080px){
+  .app-body{grid-template-columns:1fr}
+  .rail{display:none}
+  .dgrid{grid-template-columns:1fr}
+}
+@media (max-width:900px){
+  .story{grid-template-columns:1fr;gap:0}
+  .stage-col{order:-1;top:calc(env(safe-area-inset-top,0px) + var(--nav-h) + 8px)}
+  .app{height:64vh;height:64svh}
+  .beat{min-height:56svh;padding:0}
+  .beat:first-child{min-height:42svh}
+  .beat h2{font-size:1.7rem}
+  .view{padding:16px 16px 20px}
+  .t-find .tr{grid-template-columns:minmax(0,1.4fr) 84px}
+  .t-find .c-loc,.t-find .c-emp{display:none}
+  .t-qual .tr{grid-template-columns:minmax(0,1.2fr) minmax(0,1.3fr)}
+  .t-qual .c-pct{display:none}
+  .agrid{grid-template-columns:1fr;height:auto}
+  .queue{border-right:0;border-bottom:1px solid var(--line);max-height:220px}
+  .facts{grid-template-columns:1fr}
+  .app-note .n-text{display:none}
+}
+@media (max-width:560px){
+  .nav-right .btn{padding:0 12px}
+  .cta-note{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="logo" href="#top" aria-label="Loqi home"><span class="logo-mark" aria-hidden="true"></span>Loqi</a>
+    <span class="beta">Beta</span>
+    <div class="nav-right">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch between light and dark theme">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor" stroke="none"/></svg>
+      </button>
+      <a class="btn primary sm" data-cta href="https://www.tryloqi.com/book-demo">Request early access</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<section class="hero wrap">
+  <h1 class="h1">Go find your next customers.</h1>
+  <p class="lede">Loqi finds the companies, researches them, finds the right person and writes the first message. You approve before anything goes out.</p>
+  <div class="cta-row">
+    <a class="btn primary" data-cta href="https://www.tryloqi.com/book-demo">Request early access</a>
+    <a class="btn ghost" href="#story">Look inside</a>
+    <span class="cta-note">Loqi Beta. Human approval on every message.</span>
+  </div>
+</section>
+
+<section class="story wrap" id="story">
+  <div class="captions" id="captions">
+    <article class="beat" data-i="0"><p class="folio">01 / Brief</p><h2>Tell Loqi who you want.</h2><p>Describe the customer in a sentence. Loqi turns it into criteria you can edit.</p></article>
+    <article class="beat" data-i="1"><p class="folio">02 / Find</p><h2>Find the people worth reaching.</h2><p>Loqi searches the market and lists every company that could fit.</p></article>
+    <article class="beat" data-i="2"><p class="folio">03 / Qualify</p><h2>Skip the rest, and say why.</h2><p>Each account is checked against your criteria. The ones that miss are skipped, with the reason.</p><p class="hint">Try turning a criterion off.</p></article>
+    <article class="beat" data-i="3"><p class="folio">04 / Research</p><h2>Research the account.</h2><p>Signals from public sources, each tagged with where it came from.</p></article>
+    <article class="beat" data-i="4"><p class="folio">05 / Contact</p><h2>Find the right person.</h2><p>Loqi recommends who to contact and why. You can pick someone else.</p><p class="hint">Pick another person. The draft follows.</p></article>
+    <article class="beat" data-i="5"><p class="folio">06 / Draft</p><h2>Write the first message.</h2><p>Every personalized phrase points back to a source.</p><p class="hint">Hover an underlined phrase.</p></article>
+    <article class="beat" data-i="6"><p class="folio">07 / Approve</p><h2>Approve before anything goes out.</h2><p>Review each draft. Approve, edit or reject. Nothing is sent without you.</p><p class="hint">Click the queue, then press J, K, A, E or R.</p></article>
+  </div>
+
+  <div class="stage-col">
+    <div class="app" id="app" role="group" aria-label="Loqi demo workspace with sample data">
+      <div class="app-bar">
+        <span class="app-name">loqi</span>
+        <span class="app-tab">Demo workspace</span>
+        <span class="app-note"><span id="folio">01 / Brief</span><span class="n-text">Sample data</span></span>
+      </div>
+      <div class="app-prog"><i id="prog"></i></div>
+      <div class="app-body">
+        <nav class="rail" id="rail" aria-label="Workflow stages"></nav>
+        <div class="views" id="views">
+
+          <section class="view on" id="v0" aria-label="Brief">
+            <span class="lab">Your goal</span>
+            <p class="goal-text"><span id="goalText"></span><span class="caret"></span></p>
+            <ul class="feed" id="feed"></ul>
+            <div class="result" id="result"><h3 id="resultText">&nbsp;</h3><button class="link mono" id="replay" type="button">Replay</button></div>
+          </section>
+
+          <section class="view" id="v1" aria-label="Find"></section>
+          <section class="view" id="v2" aria-label="Qualify"></section>
+          <section class="view" id="v3" aria-label="Research"></section>
+          <section class="view" id="v4" aria-label="Contact"></section>
+          <section class="view" id="v5" aria-label="Draft"></section>
+          <section class="view flush" id="v6" aria-label="Approve"></section>
+
+        </div>
+      </div>
+      <div class="app-status" id="status"></div>
+    </div>
+  </div>
+</section>
+
+<section class="close wrap">
+  <h2 class="h1">Go find your next customer.</h2>
+  <p class="lede">Tell Loqi what you're selling and who you're looking for.</p>
+  <div class="cta-row"><a class="btn primary" data-cta href="https://www.tryloqi.com/book-demo">Request early access</a></div>
+  <p class="one-line">Instead of Apollo, LinkedIn, ChatGPT, Google Sheets, a CRM and an email tool: one workspace.</p>
+  <dl class="facts">
+    <div><dt>Beta</dt><dd>Loqi is in beta. Every message needs your approval before it goes anywhere.</dd></div>
+    <div><dt>Sample data</dt><dd>The companies, people and numbers on this page are examples, not customer results.</dd></div>
+    <div><dt>Pricing</dt><dd>Founding customers receive preferential pricing. Public pricing returns when self-serve is ready.</dd></div>
+  </dl>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap foot-in">
+    <span>© 2026 Loqi. Made by <a href="https://focality.space">Focality</a>.</span>
+    <nav class="foot-links" aria-label="Footer">
+      <a href="https://www.tryloqi.com/legal/terms">Terms</a>
+      <a href="https://www.tryloqi.com/legal/privacy">Privacy</a>
+      <a href="https://www.tryloqi.com/contact">Contact</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  /* one place to change where every early-access button goes */
+  var CTA_URL = 'https://www.tryloqi.com/book-demo';
+  var $ = function(s, r){ return (r || document).querySelector(s); };
+  var $$ = function(s, r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var root = document.documentElement;
+  var sleep = function(ms){ return new Promise(function(r){ setTimeout(r, ms); }); };
+  var pad = function(n){ return (n < 10 ? '0' : '') + n; };
+  $$('[data-cta]').forEach(function(a){ a.href = CTA_URL; });
+
+  /* theme (light is the default) */
+  try { var saved = localStorage.getItem('loqi-theme'); if (saved) root.setAttribute('data-theme', saved); } catch(e){}
+  $('#themeBtn').addEventListener('click', function(){
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('loqi-theme', next); } catch(e){}
+  });
+
+  /* ---------------- data ---------------- */
+  var STAGES = ['Brief','Find','Qualify','Research','Contact','Draft','Approve'];
+  var TOTAL = 47;
+  var ACCTS = [
+    { name:'Northstar AI',    city:'San Francisco, CA', region:'US',     stage:'Series A', emp:86,  hiring:true,  raised:3,  match:94 },
+    { name:'Kestrel Data',    city:'Austin, TX',        region:'US',     stage:'Series A', emp:112, hiring:true,  raised:3,  match:91 },
+    { name:'Halden Labs',     city:'Boston, MA',        region:'US',     stage:'Series A', emp:61,  hiring:true,  raised:5,  match:89 },
+    { name:'Fieldwork',       city:'Denver, CO',        region:'US',     stage:'Series B', emp:168, hiring:true,  raised:4,  match:87 },
+    { name:'Brightwave',      city:'New York, NY',      region:'US',     stage:'Series A', emp:73,  hiring:true,  raised:3,  match:84 },
+    { name:'Ostrava Systems', city:'Prague, CZ',        region:'Europe', stage:'Series A', emp:95,  hiring:true,  raised:6,  match:82 },
+    { name:'Pinecrest',       city:'Portland, OR',      region:'US',     stage:'Series A', emp:22,  hiring:true,  raised:4,  match:76 },
+    { name:'Lattice Freight', city:'Chicago, IL',       region:'US',     stage:'Series B', emp:410, hiring:true,  raised:9,  match:79 },
+    { name:'Mosaic Health',   city:'Boston, MA',        region:'US',     stage:'Seed',     emp:95,  hiring:true,  raised:5,  match:74 },
+    { name:'Quill Analytics', city:'Seattle, WA',       region:'US',     stage:'Series A', emp:140, hiring:false, raised:6,  match:78 },
+    { name:'Tidewater',       city:'Miami, FL',         region:'US',     stage:'Series A', emp:88,  hiring:true,  raised:26, match:81 },
+    { name:'Ironleaf',        city:'Toronto, ON',       region:'Canada', stage:'Series A', emp:120, hiring:true,  raised:7,  match:80 },
+    { name:'Sable Robotics',  city:'Pittsburgh, PA',    region:'US',     stage:'Series A', emp:64,  hiring:true,  raised:5,  match:83, thin:true },
+    { name:'Copperline',      city:'Denver, CO',        region:'US',     stage:'Series A', emp:190, hiring:true,  raised:7,  match:61 }
+  ];
+  var TOKENS = [
+    { id:'region', label:'United States',                 test:function(a){ return a.region === 'US'; }, why:function(a){ return 'Based in ' + (a.region === 'Europe' ? 'Europe' : a.region); } },
+    { id:'size',   label:'50 to 200 employees',           test:function(a){ return a.emp >= 50 && a.emp <= 200; }, why:function(a){ return a.emp + ' employees, ' + (a.emp < 50 ? 'below' : 'above') + ' range'; } },
+    { id:'stage',  label:'Series A or later',             test:function(a){ return a.stage !== 'Seed'; }, why:function(){ return 'Seed stage'; } },
+    { id:'hiring', label:'Hiring in sales',               test:function(a){ return a.hiring; }, why:function(){ return 'No sales hiring'; } },
+    { id:'raised', label:'Raised in the last 12 months',  test:function(a){ return a.raised <= 12; }, why:function(a){ return 'Last raised ' + a.raised + ' months ago'; } }
+  ];
+  /* rich detail for the first five accounts (same order as ACCTS) */
+  var RICH = [
+    { signals:[['Raised $12M three months ago','Funding announcement'],['Hiring 8 sales roles','Careers page'],['Expanding into Europe','Company blog']],
+      people:[['Sarah Chen','VP Growth','Owns pipeline and the European launch. Posted about outbound last week.'],['Daniel Okafor','Chief Revenue Officer','Signs off on the eight sales hires.'],['Mei Lin','Head of Sales Operations','Runs tooling for the sales team.']],
+      subject:'Northstar\u2019s European launch',
+      body:'Hi {first},\n\nCongrats on [[1|the $12M]]. I saw Northstar is [[2|hiring eight sales roles]] and [[3|opening in Europe]]. Standing up UK hiring is usually where payroll and compliance surprises show up, right when the first reps start.\n\nWe handle that for teams at your stage so it stays off your plate. Worth a 15-minute look?' },
+    { signals:[['Closed a $9M round in July','Funding announcement'],['Hiring in Dublin and Toronto','Careers page'],['New VP of Sales joined in August','Press release']],
+      people:[['Marcus Bell','VP Sales','Joined in August and is building the team for both new offices.'],['Elena Park','CEO','Led the July round.'],['Jonah Reyes','Head of RevOps','Owns the sales stack.']],
+      subject:'Dublin and Toronto in one quarter',
+      body:'Hi {first},\n\nOpening [[2|Dublin and Toronto]] in one quarter means a lot of local rules to get right at once, especially with [[3|a new VP of Sales]] building the team and [[1|the July round]] behind it.\n\nWe take on payroll and contracts for new-country hires, so your reps start on day one without delays. Open to a quick call this week?' },
+    { signals:[['Closed a Series A in April','Funding announcement'],['Announced a London office','Press release'],['Hiring a head of UK sales','Careers page']],
+      people:[['Priya Nair','COO','Runs operations and is leading the London office setup.'],['Owen Hart','CEO','Announced the Series A.'],['Lucy Brandt','Head of Growth','Hiring for the UK sales team.']],
+      subject:'Before the first UK offer letter',
+      body:'Hi {first},\n\nHalden\u2019s [[2|London office]] looks like it is moving fast, with [[3|a head of UK sales search]] already open. First UK hires usually raise questions about entity setup, payroll and benefits, and [[1|the April round]] leaves little time to sort them out.\n\nWe help teams settle that before the offer letter goes out. Worth comparing notes?' },
+    { signals:[['Raised $28M in May','Funding announcement'],['Three open roles in Berlin','Careers page'],['Published a post on remote-first hiring','Company blog']],
+      people:[['Tom\u00e1s Ortega','Head of People','Owns hiring and wrote the remote-first post.'],['Grace Whitaker','CFO','Manages spend after the $28M round.'],['Ravi Menon','VP Engineering','Leads the Berlin roles.']],
+      subject:'Your remote-first post, and Berlin',
+      body:'Hi {first},\n\nYour [[3|post on remote-first hiring]] matched what we hear from people leaders at your size. With [[2|three roles open in Berlin]] after [[1|the $28M round]], local contracts and payroll are next on the list.\n\nWe handle both so your team does not have to build that in-house. Happy to share how it works.' },
+    { signals:[['Raised $15M in June','Funding announcement'],['Hiring five account executives','Careers page'],['Growing customer base in Canada','Company blog']],
+      people:[['Dana Whitfield','CEO','At 73 people, still signs off on new-country hiring.'],['Chris Alvarez','VP Sales','Hiring the five account executives.'],['Nora Fitch','Head of Operations','Coordinates the Canada expansion.']],
+      subject:'Hiring in Canada',
+      body:'Hi {first},\n\nBrightwave\u2019s [[3|growth in Canada]] looks strong, and [[2|five open AE roles]] suggest hiring there is next, now that [[1|the June round]] has closed. Canadian payroll and compliance are easy to get wrong the first time.\n\nWe make it routine for teams like yours. Worth a short call?' }
+  ];
+
+  /* ---------------- state ---------------- */
+  var stage = -1;
+  var selAcct = 0;
+  var contactIdx = [0,0,0,0,0];
+  var active = { region:true, size:true, stage:true, hiring:true, raised:true };
+  var decisions = {};          /* index -> 'approved' | 'rejected' */
+  var edits = {};              /* index -> html */
+  var selQ = 0, editing = false;
+
+  var views = $$('.view');
+  var rail = $('#rail'), folio = $('#folio'), prog = $('#prog'), statusEl = $('#status');
+  var beats = $$('.beat');
+  var stageCol = $('.stage-col');
+
+  function first(i){ return RICH[i].people[contactIdx[i]][0].split(' ')[0]; }
+  function initials(n){ return n.split(' ').map(function(w){ return w.charAt(0); }).slice(0, 2).join(''); }
+  function bodyRefs(i){
+    return RICH[i].body.replace('{first}', first(i)).split('\n\n').map(function(p){
+      return '<p>' + p.replace(/\[\[(\d)\|(.+?)\]\]/g, '<span class="ref" data-s="$1" tabindex="0">$2<sup>$1</sup></span>') + '</p>';
+    }).join('');
+  }
+  function bodyPlain(i){
+    return RICH[i].body.replace('{first}', first(i)).split('\n\n').map(function(p){
+      return '<p>' + p.replace(/\[\[\d\|(.+?)\]\]/g, '$1') + '</p>';
+    }).join('');
+  }
+  function keepFocus(sel, fn){
+    var had = document.activeElement && views[stage] && views[stage].contains(document.activeElement);
+    fn();
+    if (had && views[stage]){ var t = $(sel, views[stage]); if (t) t.focus({ preventScroll:true }); }
+  }
+  function tabsHtml(){
+    return '<div class="tabs2" role="group" aria-label="Choose an account">' + RICH.map(function(_, i){
+      return '<button type="button" class="tab2" data-acct="' + i + '" aria-pressed="' + (i === selAcct) + '">' + ACCTS[i].name + '</button>';
+    }).join('') + '</div>';
+  }
+
+  /* ---------------- rail + status ---------------- */
+  STAGES.forEach(function(s, i){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.innerHTML = '<span class="i">' + pad(i + 1) + '</span>' + s;
+    b.addEventListener('click', function(){ jumpTo(i); });
+    rail.appendChild(b);
+  });
+  var railBtns = $$('button', rail);
+
+  function updateStatus(){
+    var a = 0, r = 0, k;
+    for (k in decisions){ if (decisions[k] === 'approved') a++; else r++; }
+    statusEl.innerHTML = '<span>Demo workspace</span><span><b>' + TOTAL + '</b> drafts</span><span><b>' + a + '</b> approved</span><span><b>' + r + '</b> rejected</span><span><b>0</b> sent</span>';
+  }
+
+  /* ---------------- view 0: brief ---------------- */
+  var GOAL = 'Find SaaS companies in the US with 50 to 200 employees that recently raised funding.';
+  var STEPS = [['Searching the market','184 companies found'],['Applying your criteria','47 qualified'],['Researching accounts','47 researched'],['Finding the right people','91 contacts found'],['Writing first messages','47 drafts ready']];
+  var goalText = $('#goalText'), feed = $('#feed'), result = $('#result'), resultText = $('#resultText'), v0 = $('#v0');
+  var rows = [], run = 0;
+  STEPS.forEach(function(s){
+    var li = document.createElement('li');
+    li.className = 'f-row';
+    li.innerHTML = '<span class="f-ic"></span><span>' + s[0] + '</span><span class="f-val"></span>';
+    feed.appendChild(li); rows.push(li);
+  });
+  function briefFinal(){
+    goalText.textContent = GOAL;
+    rows.forEach(function(r, i){ r.className = 'f-row done'; r.lastChild.textContent = STEPS[i][1]; });
+    resultText.textContent = '47 prospects worth your attention.';
+    result.classList.add('show');
+    v0.classList.remove('typing');
+  }
+  async function playBrief(){
+    var id = ++run;
+    goalText.textContent = '';
+    rows.forEach(function(r){ r.className = 'f-row'; r.lastChild.textContent = ''; });
+    result.classList.remove('show'); resultText.innerHTML = '&nbsp;';
+    if (reduce){ briefFinal(); return; }
+    v0.classList.add('typing');
+    for (var c = 1; c <= GOAL.length; c++){
+      if (id !== run) return;
+      goalText.textContent = GOAL.slice(0, c);
+      await sleep(22);
+    }
+    v0.classList.remove('typing');
+    await sleep(250);
+    for (var s = 0; s < STEPS.length; s++){
+      if (id !== run) return;
+      rows[s].className = 'f-row active';
+      await sleep(760);
+      if (id !== run) return;
+      rows[s].className = 'f-row done'; rows[s].lastChild.textContent = STEPS[s][1];
+      await sleep(120);
+    }
+    if (id !== run) return;
+    resultText.textContent = '47 prospects worth your attention.';
+    result.classList.add('show');
+  }
+  $('#replay').addEventListener('click', playBrief);
+
+  /* ---------------- view 1: find ---------------- */
+  $('#v1').innerHTML =
+    '<div class="v-head"><h3>184 companies found</h3><span class="meta mono">Showing 14 of 184</span></div>' +
+    '<div class="tbl t-find"><div class="tr th"><span>Company</span><span class="c-loc">Location</span><span>Stage</span><span class="c-emp">Employees</span></div>' +
+    ACCTS.map(function(a){
+      return '<div class="tr"><span class="nm">' + a.name + '</span><span class="dim c-loc">' + a.city + '</span><span class="dim">' + a.stage + '</span><span class="dim c-emp">' + a.emp + '</span></div>';
+    }).join('') + '</div>';
+
+  /* ---------------- view 2: qualify ---------------- */
+  function verdict(a){
+    for (var i = 0; i < TOKENS.length; i++){
+      var t = TOKENS[i];
+      if (active[t.id] && !t.test(a)) return { ok:false, why:t.why(a) };
+    }
+    if (a.thin) return { ok:false, why:'Too few public signals to personalize' };
+    if (a.match < 70) return { ok:false, why:'Match ' + a.match + '%, below threshold' };
+    return { ok:true };
+  }
+  $('#v2').innerHTML =
+    '<div class="toks" id="toks" role="group" aria-label="Your criteria">' +
+    TOKENS.map(function(t){ return '<button type="button" class="tok" data-tok="' + t.id + '" aria-pressed="true">' + t.label + '</button>'; }).join('') + '</div>' +
+    '<div id="qBody"></div>';
+  function renderQualify(){
+    var res = ACCTS.map(function(a){ return { a:a, v:verdict(a) }; });
+    var ok = res.filter(function(r){ return r.v.ok; }).sort(function(x, y){ return y.a.match - x.a.match; });
+    var no = res.filter(function(r){ return !r.v.ok; });
+    var html = '<div class="v-head"><h3>Loqi skipped ' + no.length + ' of ' + ACCTS.length + '. Here\u2019s why.</h3><span class="meta mono">' + ok.length + ' qualified. In the full demo search, 47 of 184 qualified.</span></div>' +
+      '<div class="tbl t-qual"><div class="tr th"><span>Company</span><span class="c-pct">Match</span><span>Result</span></div>';
+    ok.forEach(function(r){
+      html += '<div class="tr"><span class="nm">' + r.a.name + '</span><span class="pct c-pct"><span class="bar"><i style="width:' + r.a.match + '%"></i></span>' + r.a.match + '%</span><span class="verdict">Qualified</span></div>';
+    });
+    no.forEach(function(r){
+      html += '<div class="tr skip"><span class="nm">' + r.a.name + '</span><span class="dim c-pct">\u2014</span><span class="verdict why">' + r.v.why + '</span></div>';
+    });
+    $('#qBody').innerHTML = html + '</div>';
+  }
+  $('#toks').addEventListener('click', function(e){
+    var b = e.target.closest('[data-tok]'); if (!b) return;
+    var id = b.getAttribute('data-tok');
+    active[id] = !active[id];
+    b.setAttribute('aria-pressed', active[id] ? 'true' : 'false');
+    renderQualify();
+  });
+  renderQualify();
+
+  /* ---------------- views 3-5: account-driven ---------------- */
+  function renderResearch(){
+    var a = ACCTS[selAcct], d = RICH[selAcct];
+    $('#v3').innerHTML = tabsHtml() +
+      '<div class="acct-head"><div><h3>' + a.name + '</h3><p class="meta mono">' + a.stage + ', ' + a.emp + ' employees, ' + a.city + '</p></div><div class="fit"><b>' + a.match + '%</b><span>match</span></div></div>' +
+      '<span class="lab">Signals</span><ul>' + d.signals.map(function(s, i){
+        return '<li class="sg"><span class="ix">' + (i + 1) + '</span><span>' + s[0] + '</span><span class="src">' + s[1] + '</span></li>';
+      }).join('') + '</ul><p class="note">Loqi read three public sources for this account.</p>';
+  }
+  function renderContact(){
+    var a = ACCTS[selAcct], d = RICH[selAcct];
+    $('#v4').innerHTML = tabsHtml() +
+      '<div class="v-head"><h3>Who to contact at ' + a.name + '</h3><span class="meta mono">' + d.people.length + ' people found</span></div><ul class="people">' +
+      d.people.map(function(p, i){
+        return '<li><button type="button" class="person' + (i === contactIdx[selAcct] ? ' sel' : '') + '" data-p="' + i + '" aria-pressed="' + (i === contactIdx[selAcct]) + '"><span class="avatar">' + initials(p[0]) + '</span><span class="pinfo"><b>' + p[0] + '</b><span>' + p[1] + '</span><span class="why">' + p[2] + '</span></span>' + (i === 0 ? '<span class="rec-tag">Recommended</span>' : '<span></span>') + '</button></li>';
+      }).join('') + '</ul>';
+  }
+  function renderDraft(){
+    var a = ACCTS[selAcct], d = RICH[selAcct], p = d.people[contactIdx[selAcct]];
+    $('#v5').innerHTML = tabsHtml() +
+      '<div class="dgrid"><div><div class="m-meta"><b>To</b><span>' + p[0] + ', ' + p[1] + ', ' + a.name + '</span></div>' +
+      '<div class="m-meta"><b>Subject</b><span>' + d.subject + '</span></div>' +
+      '<div class="m-body">' + bodyRefs(selAcct) + '</div></div>' +
+      '<aside class="sources"><span class="lab">Sources</span><ul>' + d.signals.map(function(s, i){
+        return '<li class="sg" data-s="' + (i + 1) + '"><span class="ix">' + (i + 1) + '</span><span>' + s[0] + '</span><span class="src">' + s[1] + '</span></li>';
+      }).join('') + '</ul></aside></div>';
+  }
+  function renderAccountViews(){ renderResearch(); renderContact(); renderDraft(); }
+  renderAccountViews();
+
+  ['#v3', '#v4', '#v5'].forEach(function(id){
+    $(id).addEventListener('click', function(e){
+      var t = e.target.closest('[data-acct]');
+      if (t){ selAcct = +t.getAttribute('data-acct'); keepFocus('.tab2[aria-pressed="true"]', renderAccountViews); return; }
+      var p = e.target.closest('[data-p]');
+      if (p){ contactIdx[selAcct] = +p.getAttribute('data-p'); keepFocus('.person.sel', function(){ renderContact(); renderDraft(); renderApprove(true); }); }
+    });
+  });
+  function hl(s, on){
+    $$('#v5 [data-s="' + s + '"]').forEach(function(el){ el.classList.toggle('hl', on); });
+  }
+  var v5 = $('#v5');
+  v5.addEventListener('mouseover', function(e){ var t = e.target.closest('[data-s]'); if (t) hl(t.getAttribute('data-s'), true); });
+  v5.addEventListener('mouseout',  function(e){ var t = e.target.closest('[data-s]'); if (t) hl(t.getAttribute('data-s'), false); });
+  v5.addEventListener('focusin',   function(e){ var t = e.target.closest('[data-s]'); if (t) hl(t.getAttribute('data-s'), true); });
+  v5.addEventListener('focusout',  function(e){ var t = e.target.closest('[data-s]'); if (t) hl(t.getAttribute('data-s'), false); });
+
+  /* ---------------- view 6: approval queue ---------------- */
+  var v6 = $('#v6');
+  v6.innerHTML = '<div class="agrid" id="agrid" tabindex="0" aria-label="Approval queue. Use J and K to move, A to approve, E to edit, R to reject."><div class="queue" id="queue"></div><div class="preview" id="preview"></div></div>';
+  var agrid = $('#agrid'), queueEl = $('#queue'), previewEl = $('#preview');
+
+  function renderApprove(preserve){
+    var had = agrid.contains(document.activeElement) && !editing;
+    queueEl.innerHTML = RICH.map(function(d, i){
+      var st = decisions[i] || '';
+      return '<button type="button" class="q ' + st + (i === selQ ? ' sel' : '') + '" data-q="' + i + '"><span class="qs"></span><span><b>' + ACCTS[i].name + '</b><span class="sub">' + d.subject + '</span></span><span class="tag">' + (st === 'approved' ? 'Approved' : st === 'rejected' ? 'Rejected' : '') + '</span></button>';
+    }).join('') + '<div class="q more">+' + (TOTAL - RICH.length) + ' more drafts in this search</div>';
+    var d = RICH[selQ], a = ACCTS[selQ], p = d.people[contactIdx[selQ]], st = decisions[selQ];
+    var actions;
+    if (st){
+      actions = '<span class="state-chip' + (st === 'rejected' ? ' no' : '') + '">' + (st === 'approved' ? 'Approved' : 'Rejected') + '</span><button type="button" class="pbtn" data-act="undo">Undo<span class="kbd">U</span></button>';
+    } else {
+      actions = '<button type="button" class="pbtn approve" data-act="approve">Approve<span class="kbd">A</span></button><button type="button" class="pbtn" data-act="edit">' + (editing ? 'Done' : 'Edit') + '<span class="kbd">' + (editing ? 'Esc' : 'E') + '</span></button><button type="button" class="pbtn" data-act="reject">Reject<span class="kbd">R</span></button>';
+    }
+    previewEl.innerHTML =
+      '<div><div class="m-meta"><b>To</b><span>' + p[0] + ', ' + p[1] + ', ' + a.name + '</span></div><div class="m-meta"><b>Subject</b><span>' + d.subject + '</span></div></div>' +
+      '<div class="m-body" id="pBody"' + (editing ? ' contenteditable="true"' : '') + '>' + (edits[selQ] || bodyPlain(selQ)) + '</div>' +
+      '<div class="pactions">' + actions + '</div>' +
+      '<p class="kb-hint" id="kbHint">' + (st === 'approved' ? 'Approved. Loqi never sends without you.' : st === 'rejected' ? 'Rejected. Loqi will not use this draft.' : 'Nothing is sent until you approve it.') + '</p>';
+    updateStatus();
+    if (editing){ var b = $('#pBody'); if (b) b.focus(); }
+    else if (had && !preserve){ agrid.focus({ preventScroll:true }); }
+  }
+  function stopEdit(save){
+    if (!editing) return;
+    var b = $('#pBody');
+    if (save !== false && b) edits[selQ] = b.innerHTML;
+    editing = false;
+  }
+  function nextPending(from){
+    for (var n = 1; n <= RICH.length; n++){
+      var i = (from + n) % RICH.length;
+      if (!decisions[i]) return i;
+    }
+    return from;
+  }
+  function act(kind){
+    if (kind === 'approve' || kind === 'reject'){
+      stopEdit(); decisions[selQ] = kind === 'approve' ? 'approved' : 'rejected';
+      selQ = nextPending(selQ); renderApprove();
+    } else if (kind === 'undo'){ delete decisions[selQ]; renderApprove(); }
+    else if (kind === 'edit'){
+      if (editing){ stopEdit(); renderApprove(); agrid.focus({ preventScroll:true }); }
+      else if (!decisions[selQ]){ editing = true; renderApprove(); }
+    }
+  }
+  agrid.addEventListener('click', function(e){
+    var q = e.target.closest('[data-q]');
+    if (q){ stopEdit(); selQ = +q.getAttribute('data-q'); renderApprove(); return; }
+    var b = e.target.closest('[data-act]');
+    if (b) act(b.getAttribute('data-act'));
+  });
+  agrid.addEventListener('keydown', function(e){
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (editing){ if (e.key === 'Escape'){ e.preventDefault(); act('edit'); } return; }
+    var k = e.key.toLowerCase(), handled = true;
+    if (k === 'j' || k === 'arrowdown'){ selQ = Math.min(RICH.length - 1, selQ + 1); renderApprove(); }
+    else if (k === 'k' || k === 'arrowup'){ selQ = Math.max(0, selQ - 1); renderApprove(); }
+    else if (k === 'a'){ if (!decisions[selQ]) act('approve'); }
+    else if (k === 'r'){ if (!decisions[selQ]) act('reject'); }
+    else if (k === 'e'){ act('edit'); }
+    else if (k === 'u'){ act('undo'); }
+    else handled = false;
+    if (handled) e.preventDefault();
+  });
+  agrid.addEventListener('focus', function(){ var h = $('#kbHint'); if (h){ h.classList.add('on'); h.textContent = 'Keyboard on. J K move, A approve, E edit, R reject.'; } });
+  agrid.addEventListener('blur', function(){ var h = $('#kbHint'); if (h) h.classList.remove('on'); });
+  renderApprove(true);
+
+  /* ---------------- stage control ---------------- */
+  function setStage(i){
+    if (i === stage) return;
+    if (stage === 6) stopEdit();
+    stage = i;
+    views.forEach(function(v, n){ v.classList.toggle('on', n === i); });
+    railBtns.forEach(function(b, n){
+      b.classList.toggle('on', n === i); b.classList.toggle('past', n < i);
+      if (n === i) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
+    });
+    beats.forEach(function(b, n){ b.classList.toggle('on', n === i); });
+    folio.textContent = pad(i + 1) + ' / ' + STAGES[i];
+    prog.style.width = ((i + 1) / STAGES.length * 100) + '%';
+    views[i].scrollTop = 0;
+    if (i === 6) renderApprove(true);
+  }
+  function isNarrow(){ return window.matchMedia('(max-width: 900px)').matches; }
+  function lineY(){
+    if (isNarrow()){ var r = stageCol.getBoundingClientRect(); return (r.bottom + window.innerHeight) / 2; }
+    return window.innerHeight * 0.5;
+  }
+  var ticking = false;
+  function onScroll(){
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(function(){
+      ticking = false;
+      var y = lineY(), idx = 0;
+      beats.forEach(function(b, n){ if (b.getBoundingClientRect().top <= y) idx = n; });
+      setStage(idx);
+    });
+  }
+  function jumpTo(i){
+    var r = beats[i].getBoundingClientRect();
+    var top = window.scrollY + r.top + r.height / 2 - lineY();
+    window.scrollTo({ top: Math.max(0, top), behavior: reduce ? 'auto' : 'smooth' });
+  }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  window.addEventListener('resize', onScroll);
+  setStage(0);
+  updateStatus();
+  playBrief();
+})();
+</script>
+</body>
+</html>

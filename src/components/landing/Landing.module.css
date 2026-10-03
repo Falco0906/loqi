@@ -104,7 +104,10 @@
 .landing :global(.faq summary span) { font-size:21px; line-height:1; font-weight:300; transition:transform .2s; }
 .landing :global(.faq details[open] summary span) { transform:rotate(45deg); }
 .landing :global(.faq details p) { padding:0 0 24px; font-size:14px; line-height:1.8; color:var(--muted); }
-.landing :global(.final) { background:var(--sage); text-align:center; padding:110px 0 95px; }
+.landing :global(.final) { --curve-depth:clamp(32px,6vw,104px); position:relative; background:var(--bg); text-align:center; padding:110px 0 95px; }
+.landing :global(.final)::before { content:""; position:absolute; inset:0; background:var(--sage); border-bottom:1px solid var(--line-2); border-radius:0 0 38% 62% / 0 0 calc(var(--curve-depth) * .7) var(--curve-depth); pointer-events:none; }
+.landing :global(.final > .wrap) { position:relative; }
+.landing :global(main:has(> .final) + .footer) { background:var(--bg); border-top-color:transparent; }
 .landing :global(.final .h1) { font-size:clamp(46px,6.3vw,88px); }
 .landing :global(.final .sec-lede) { margin:26px auto 0; }
 .landing :global(.fine) { color:var(--muted); font-size:12px; margin-top:22px; }
