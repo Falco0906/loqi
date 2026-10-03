@@ -55,5 +55,33 @@ export function FinalCTA() {
 }
 
 export function Footer() {
-  return <footer className="footer"><div className="wrap foot-in"><a href="#top" aria-label="Loqi home"><LoqiBrand /></a><span>© 2026 Loqi. Made by <a href="https://focality.space">focality</a>.</span><nav className="foot-links" aria-label="Footer"><Link href="/legal/terms">Terms</Link><Link href="/legal/privacy">Privacy</Link><Link href="/contact">Contact</Link></nav></div></footer>;
+  return <footer className="footer"><div className="wrap">
+    <div className="foot-top">
+      <div className="foot-brand">
+        <Link href="/#top" aria-label="Loqi home"><LoqiBrand /></Link>
+        <p className="foot-statement">Find the people<br /><em>worth reaching.</em></p>
+      </div>
+      <nav className="foot-sitemap" aria-label="Footer sitemap">
+        <div className="foot-group"><h2>Product</h2><ul>
+          <li><Link href="/#how">How Loqi works</Link></li>
+          <li><Link href="/#stage-1">Discovery</Link></li>
+          <li><Link href="/#context">Intelligence</Link></li>
+          <li><Link href="/#message">Outreach</Link></li>
+          <li><Link href="/#access">Early access</Link></li>
+        </ul></div>
+        <div className="foot-group"><h2>Company</h2><ul>
+          <li><a href="https://focality.space/" target="_blank" rel="noopener noreferrer">Focality <span aria-hidden="true">↗</span></a></li>
+          <li><Link href="/contact">Contact</Link></li>
+          <li><Link href="/#questions">FAQs</Link></li>
+        </ul></div>
+        <div className="foot-group"><h2>Resources</h2><ul>
+          <li><Link href="/#stage-0">Product tour</Link></li>
+        </ul></div>
+      </nav>
+    </div>
+    <div className="foot-bottom">
+      <p>© 2026 Loqi. Made by <a href="https://focality.space/" target="_blank" rel="noopener noreferrer">Focality<span className="foot-external" aria-hidden="true"> ↗</span></a>.</p>
+      <nav className="foot-links" aria-label="Legal and contact"><Link href="/legal/terms">Terms</Link><Link href="/legal/privacy">Privacy</Link><Link href="/contact">Contact</Link></nav>
+    </div>
+  </div></footer>;
 }
