@@ -12,8 +12,8 @@ export function Nav({ home = true }: { home?: boolean }) {
   const base = home ? "" : "/";
   return <header className="nav"><div className="wrap nav-in">
     <a className="logo" href={`${base}#top`} aria-label="Loqi home"><LoqiBrand /></a><span className="beta">Beta</span>
-    <nav className="nav-links" aria-label="Primary"><a href={`${base}#how`}>The product</a><a href={`${base}#together`}>How we work</a><a href={`${base}#access`}>Early access</a><a href={`${base}#questions`}>FAQs</a></nav>
-    <div className="nav-right"><AccessLink small /></div>
+    <nav className="nav-links" aria-label="Primary"><a href={`${base}#how`}>The product</a><a href={`${base}#together`}>How we work</a><a href={`${base}#access`}>Early access</a><a href={`${base}#questions`}>FAQs</a><a className="focality-link" href="https://focality.space/">Focality <span aria-hidden="true">↗</span></a></nav>
+    <div className="nav-right"><AccessLink small /><a className="focality-mobile" href="https://focality.space/">Focality <span aria-hidden="true">↗</span></a></div>
   </div></header>;
 }
 

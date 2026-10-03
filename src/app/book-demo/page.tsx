@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
 import InputField from "@/components/ui/InputField";
@@ -43,6 +43,7 @@ export default function BookDemoPage() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof FormState, string>>>({});
+  const submitting = useRef(false);
 
   function updateField<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -71,10 +72,12 @@ export default function BookDemoPage() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (submitting.current || submitted) return;
     setError("");
 
     if (!validate()) return;
 
+    submitting.current = true;
     setLoading(true);
 
     try {
@@ -84,16 +87,18 @@ export default function BookDemoPage() {
         body: JSON.stringify(form),
       });
 
-      const data = await response.json();
+      const data = await response.json().catch(() => null);
 
-      if (!response.ok) {
-        throw new Error(data.error || "Something went wrong. Please try again.");
+      if (!response.ok || data?.ok !== true) {
+        if (data?.details) setFieldErrors(data.details);
+        throw new Error(data?.error || "Unable to submit your request right now. Please try again shortly.");
       }
 
       setSubmitted(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to submit right now. Please try again.");
     } finally {
+      submitting.current = false;
       setLoading(false);
     }
   }
@@ -158,7 +163,7 @@ export default function BookDemoPage() {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6" aria-busy={loading}>
             <div className="grid gap-6 sm:grid-cols-2">
               <InputField
                 id="name"
@@ -279,7 +284,7 @@ export default function BookDemoPage() {
             </label>
 
             {error ? (
-              <div className="rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+              <div role="alert" className="rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-200">
                 {error}
               </div>
             ) : null}

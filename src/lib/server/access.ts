@@ -1,4 +1,3 @@
-import nodemailer from "nodemailer";
 
 const DUPLICATE_WINDOW_MS = 10 * 60 * 1000;
 const IP_WINDOW_MS = 60 * 60 * 1000;
@@ -108,6 +107,7 @@ export async function forwardAccessRequest(payload: {
     },
     body: JSON.stringify(webhookPayload),
     cache: "no-store",
+    signal: AbortSignal.timeout(5000),
   });
 
   const rawBody = await response.text();
@@ -121,18 +121,8 @@ export async function forwardAccessRequest(payload: {
     }
   }
 
-  console.log("[google-sheets-webhook] request payload", webhookPayload);
-  console.log("[google-sheets-webhook] response", {
-    status: response.status,
-    ok: response.ok,
-    body: parsedBody,
-  });
 
   if (!response.ok) {
-    console.error("[google-sheets-webhook] failed response", {
-      status: response.status,
-      body: parsedBody,
-    });
     throw new Error(`Google Sheets webhook failed with status ${response.status}`);
   }
 
@@ -142,55 +132,8 @@ export async function forwardAccessRequest(payload: {
     "success" in parsedBody &&
     (parsedBody as { success?: boolean }).success !== true
   ) {
-    console.error("[google-sheets-webhook] unsuccessful body", {
-      status: response.status,
-      body: parsedBody,
-    });
     throw new Error("Google Sheets webhook returned success=false");
   }
-}
-
-export async function sendAccessRequestEmail(payload: {
-  name: string;
-  email: string;
-  whatsapp: string;
-  useCase: string;
-  timestamp: string;
-}) {
-  const smtpEmail = requireEnv("SMTP_EMAIL");
-  const smtpPassword = requireEnv("SMTP_PASSWORD");
-
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: smtpEmail,
-      pass: smtpPassword,
-    },
-  });
-
-  await transporter.sendMail({
-    from: smtpEmail,
-    to: "faisal96kp@gmail.com",
-    subject: `New Loqi access request from ${payload.name}`,
-    text: [
-      "New Loqi access request",
-      `Name: ${payload.name}`,
-      `Email: ${payload.email}`,
-      `WhatsApp: ${payload.whatsapp}`,
-      `Use case: ${payload.useCase}`,
-      `Timestamp: ${payload.timestamp}`,
-    ].join("\n"),
-    html: `
-      <div style="font-family: Arial, sans-serif; color: #111827; line-height: 1.6;">
-        <h2>New Loqi access request</h2>
-        <p><strong>Name:</strong> ${escapeHtml(payload.name)}</p>
-        <p><strong>Email:</strong> ${escapeHtml(payload.email)}</p>
-        <p><strong>WhatsApp:</strong> ${escapeHtml(payload.whatsapp)}</p>
-        <p><strong>Use case:</strong> ${escapeHtml(payload.useCase)}</p>
-        <p><strong>Timestamp:</strong> ${escapeHtml(payload.timestamp)}</p>
-      </div>
-    `,
-  });
 }
 
 export async function sendTelegramAdminNotification(payload: {
@@ -220,6 +163,7 @@ export async function sendTelegramAdminNotification(payload: {
       text,
     }),
     cache: "no-store",
+    signal: AbortSignal.timeout(5000),
   });
 
   if (!response.ok) {
