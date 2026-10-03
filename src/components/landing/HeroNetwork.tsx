@@ -88,9 +88,10 @@ export default function HeroNetwork() {
         const ease = ramp * ramp * (3 - 2 * ramp);
         const phase = id * 2.399;
         const scale = layout.compact ? .4 : 1;
+        const motionTime = elapsed * 2.5;
         // Independent paths with a small, visible drift, bounded to the margins.
-        let x = (6 * (Math.sin(elapsed * (.14 + id * .008) + phase) - Math.sin(phase)) + 2 * (Math.sin(elapsed * .081 + phase) - Math.sin(phase))) * ease * scale;
-        let y = 6 * (Math.sin(elapsed * (.11 + id * .011) + phase * .7) - Math.sin(phase * .7)) * ease * scale;
+        let x = (6 * (Math.sin(motionTime * (.14 + id * .008) + phase) - Math.sin(phase)) + 2 * (Math.sin(motionTime * .081 + phase) - Math.sin(phase))) * ease * scale;
+        let y = 6 * (Math.sin(motionTime * (.11 + id * .011) + phase * .7) - Math.sin(phase * .7)) * ease * scale;
         if (still || drag.current?.id === id) { x = 0; y = 0; }
         const b = bounds(id);
         const minX = layout.compact ? 50 : b.left;

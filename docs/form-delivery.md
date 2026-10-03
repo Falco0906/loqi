@@ -1,71 +1,65 @@
-# Form notification delivery
+# FormSubmit notifications
 
-`/book-demo` posts to `/api/book-demo`. All current early-access CTAs lead to
-`/book-demo`. The legacy `/api/request-access` route uses the same mail service.
-Both routes require SMTP acceptance for **founder@tryloqi.com** and
-**faisal96kp@gmail.com** before returning `{ "ok": true }`.
+The unchanged `/book-demo` UI posts to `/api/book-demo`. The legacy
+`/api/request-access` route shares the same validation and FormSubmit adapter.
+Both routes require HTTP success and `success: true` (or `"true"`) from **both**
+FormSubmit AJAX endpoints before returning `{ "ok": true }`:
 
-## Server configuration
+- `https://formsubmit.co/ajax/founder@tryloqi.com`
+- `https://formsubmit.co/ajax/faisal96kp@gmail.com`
 
-The existing integration is Nodemailer with Gmail SMTP (TLS on port 465).
-Set these variables in `.env.local` for local use and in the landing application's
-production runtime environment for deployment:
+This follows Focality's `src/components/Contact/index.tsx`: two parallel JSON
+POSTs, `Accept: application/json`, `_subject`, and `_template: "table"`.
+Focality has no custom honeypot or CAPTCHA setting. Loqi likewise does not disable
+provider defaults. Loqi additionally validates the HTTP status and JSON success
+value, and rejects activation notices instead of showing a false success.
 
-- `SMTP_EMAIL`: the existing Gmail or Google Workspace account used to authenticate
-  and send. The sender is this account; the visitor's email is only `Reply-To`.
-- `SMTP_PASSWORD`: a Google App Password for that same account. Enable 2-Step
-  Verification and create an App Password. Workspace policy must permit it.
-  Do not use a normal account password or expose either value as `NEXT_PUBLIC_*`.
+All existing fields, source path and a UTC timestamp are included. The subject
+is `New Loqi Early Access Request — [name / company]`. `email` and `_replyto`
+carry the visitor's address. The recipient destinations and control fields are
+server-owned. The FormSubmit referrer identifies the production Loqi page, so
+local tests do not register a separate localhost form.
 
-See [Nodemailer's Gmail configuration](https://nodemailer.com/guides/using-gmail).
-For a Workspace sender, its administrator should maintain the domain's SPF/DKIM
-configuration and inspect delivery logs/bounces. SMTP acceptance alone does not
-prove arrival in either inbox.
+## Activation and deployment
 
-The handlers explicitly use the Node.js runtime, with a 60-second route duration
-and bounded SMTP connection/read timeouts. The deployment must support Node.js
-server routes and outbound SMTP. Static-only hosting cannot run these handlers.
-On Vercel, set both variables for Production (and Preview if testing there), then
-redeploy for environment changes to take effect. No deployment was performed here.
+No mail credentials or API key are needed. Remove obsolete SMTP configuration
+from deployment settings when convenient; no code reads it. Activate each
+recipient through the confirmation email FormSubmit sends on first use. Check
+both inboxes and spam folders, then submit again to confirm receipt in both.
+An activation notice is not proof that a submission email has been delivered.
 
-There are no local SMTP credentials, `.vercel` project settings, or accessible
-production environment configuration in this checkout. Production variable
-presence and the cause of the reported historical submission cannot be confirmed
-from this repository alone.
+The existing Node.js routes must be available in production with outbound HTTPS
+access to `formsubmit.co`. No new infrastructure or client secrets are required.
+The visitor stays on Loqi; only its existing inline state changes.
 
-## Existing secondary access notifications
+## Reliability
 
-The legacy access endpoint still forwards to Google Sheets when
-`GOOGLE_SHEETS_WEBHOOK_URL` is present and notifies Telegram when both
-`TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` are present. These are optional secondary
-notifications, bounded to five seconds. Their absence or failure cannot block
-email delivery. They are not required by the current book-demo form.
+Server validation, the 32 KB request limit, browser submission lock and five
+attempts/hour/process limit remain. Requests to the provider have a 20-second
+timeout. Network failures, malformed replies, rejection, activation notices and
+partial acceptance return 502 with the existing retry/contact message.
 
-## Failure and duplicate handling
+A bounded 10-minute process-local cache prevents concurrent identical submissions
+and remembers which recipient endpoints accepted a request. A partial retry
+targets only the remaining endpoint. This cache is not shared across serverless
+instances or restarts, and an ambiguous network timeout can still cause duplicates.
+Provider acceptance is not confirmation of inbox delivery.
 
-Malformed input returns 400; oversized requests return 413. Missing mail
-configuration returns 503; provider failure or partial recipient acceptance
-returns 502. Visitors keep their entered fields and see a retry/contact message.
-Logs include only a category and counts, never submitted data or credentials.
-
-The browser locks submission immediately until its request completes. A process-local
-10-minute fingerprint cache prevents simultaneous identical requests and remembers
-SMTP-accepted recipients. Identical successful retries return success without
-sending again; partial retries address only recipients not yet accepted. Basic
-IP attempt limiting allows five attempts per hour per process.
-
-These maps are bounded but are not shared across serverless instances or restarts.
-SMTP cannot guarantee exactly-once delivery, especially after an ambiguous network
-timeout. A durable queue/store would be needed for that guarantee; none was added.
+Optional legacy Google Sheets and Telegram notifications are retained and cannot
+turn an accepted submission into a reported failure. Their existing environment
+variables are independent of FormSubmit and are not needed for `/book-demo`.
 
 ## Verification
 
-Run `node --test tests/submission.test.cjs` for route, validation, recipient,
-partial-failure, retry and concurrent-submission coverage using a mocked SMTP
-transport. These tests do **not** send email or prove Gmail delivery.
+`node --test tests/submission.test.cjs` tests real route validation with mocked
+external HTTP responses: both endpoints, fields, Reply-To, success/failure,
+activation, partial retry and concurrency. These tests do not send email.
 
-After configuring real credentials, submit a clearly labeled test from the form.
-Confirm the request returns 200 only after SMTP acceptance and manually check both
-inboxes/spam folders (or Workspace delivery logs). If it fails, inspect the server
-error category and sender account/provider logs. Do not call acceptance verified
-inbox delivery until both messages are found.
+For an actual pipeline check, submit a clearly labeled test through `/book-demo`,
+record FormSubmit acceptance separately, and manually confirm both inboxes.
+See https://formsubmit.co/documentation and https://formsubmit.co/ajax-documentation.
+
+Local verification on 2026-10-03: a browser submission reached both FormSubmit
+endpoints, which returned HTTP 200 with activation-required notices. Loqi returned
+502 and displayed the inline error as intended. Notification acceptance and inbox
+delivery remain unverified until the recipient activation links are confirmed.

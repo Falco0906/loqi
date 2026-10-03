@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
-import { MailConfigurationError, NOTIFICATION_RECIPIENTS, sendSubmissionMail } from "./submission-mail";
+import { NOTIFICATION_RECIPIENTS, sendSubmission } from "./submission-formsubmit";
 import { forwardAccessRequest, sendTelegramAdminNotification } from "./access";
 
 type Kind = "demo" | "access";
@@ -62,15 +62,16 @@ export async function handleSubmission(request: NextRequest, kind: Kind) {
   if (!entry) { entry = {created:now,busy:false,accepted:new Set(),timestamp:new Date().toISOString()}; submissions.set(key,entry); }
   entry.busy = true;
   try {
-    const accepted = await sendSubmissionMail({
-      title:kind === "demo" ? "New Loqi demo request" : "New Loqi early-access request",
+    const accepted = await sendSubmission({
+      title:`New Loqi Early Access Request — ${[values.name, values.company].filter(Boolean).join(" / ").replace(/[\r\n]+/g, " ")}`,
       email:values.email,
+      source:kind === "demo" ? "/book-demo" : "/access",
       fields:[...fields.map(([key,label]):[string,string] => [label,values[key]]),["Submitted at (UTC)",entry.timestamp],["Source",kind === "demo" ? "/book-demo" : "/api/request-access"]],
       pendingRecipients:NOTIFICATION_RECIPIENTS.filter(recipient => !entry!.accepted.has(recipient)),
     });
     for (const recipient of accepted) if (NOTIFICATION_RECIPIENTS.some(expected => expected === recipient)) entry.accepted.add(recipient);
     if (entry.accepted.size !== NOTIFICATION_RECIPIENTS.length) {
-      console.error("[submission-mail]",{kind,code:"PARTIAL_RECIPIENT_ACCEPTANCE",acceptedCount:entry.accepted.size});
+      console.error("[formsubmit]",{kind,code:"INCOMPLETE_ACCEPTANCE",acceptedCount:entry.accepted.size});
       return NextResponse.json({error:failure},{status:502});
     }
     if (kind === "access") {
@@ -83,11 +84,8 @@ export async function handleSubmission(request: NextRequest, kind: Kind) {
       if (results.some(result => result.status === "rejected")) console.warn("[request-access] A secondary notification failed after email acceptance.");
     }
     return NextResponse.json({ok:true});
-  } catch (error) {
-    const code = error instanceof MailConfigurationError ? "SMTP_CONFIGURATION_MISSING" : "SMTP_DELIVERY_FAILED";
-    const providerCode = error && typeof error === "object" && "code" in error ? String(error.code) : "";
-    const knownCode = ["EAUTH","ECONNECTION","ETIMEDOUT","EENVELOPE","EMESSAGE","ESOCKET"].includes(providerCode) ? providerCode : undefined;
-    console.error("[submission-mail]",{kind,code,providerCode:knownCode});
-    return NextResponse.json({error:failure},{status:error instanceof MailConfigurationError ? 503 : 502});
+  } catch {
+    console.error("[formsubmit]",{kind,code:"SUBMISSION_FAILED"});
+    return NextResponse.json({error:failure},{status:502});
   } finally { entry.busy = false; }
 }

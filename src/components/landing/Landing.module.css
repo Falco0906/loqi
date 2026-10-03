@@ -43,7 +43,7 @@
 .landing :global(.nav-links a) { text-decoration:none; font-size:13px; color:var(--muted); }
 .landing :global(.nav-links a:hover) { color:var(--text); }
 .landing :global(.nav-links .focality-link) { margin-left:12px; }
-.landing :global(.focality-link),.landing :global(.focality-mobile) { transition:color .2s; white-space:nowrap; }
+.landing :global(.focality-link),.landing :global(.focality-mobile) { font-family:var(--focality-wordmark),sans-serif; font-weight:500; letter-spacing:-.01em; transition:color .2s; white-space:nowrap; }
 .landing :global(.focality-link span),.landing :global(.focality-mobile span) { font-size:.85em; opacity:.7; }
 .landing :global(.focality-mobile) { display:none; }
 .landing :global(.nav-right) { display:flex; gap:14px; align-items:center; }
